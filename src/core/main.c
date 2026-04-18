@@ -49,8 +49,7 @@ int	main(int argc, char **argv, char **envp)
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
-			{
-				
+			{		
 				executor(cmd, &env_list);
 			}
 		}

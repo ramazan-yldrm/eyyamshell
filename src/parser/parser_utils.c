@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 10:13:45 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/17 17:21:08 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:09:08 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	cmd_add_back(t_cmd **cmd, t_cmd *new_cmd)
 	tmp->next = new_cmd;
 	new_cmd->prev = tmp;
 }
-
 
 void	redir_add_back(t_redir **redir, t_redir *new_redir)
 {

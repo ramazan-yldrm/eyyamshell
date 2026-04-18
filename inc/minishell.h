@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/17 17:36:44 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:44:21 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ char	**env_to_array(t_env *env);
 
 typedef enum e_gc_type
 {
-    GC_PERM,
-    GC_TEMP
-}   t_gc_type;
+	GC_PERM,
+	GC_TEMP
+}	t_gc_type;
 
 typedef struct s_gc
 {
-    void            *value;
-    t_gc_type       type;
-	struct s_gc		*prev;
-    struct s_gc     *next;
-}   t_gc;
+	void		*value;
+	t_gc_type	type;
+	struct s_gc	*prev;
+	struct s_gc	*next;
+}	t_gc;
 
 t_gc	**get_collector(void);
 void	*gc_malloc(size_t size, t_gc_type type);
@@ -83,11 +83,11 @@ char	*gc_itoa(int n, t_gc_type type);
 typedef enum e_token_type
 {
 	TOKEN_WORD,
-    TOKEN_PIPE,
-    TOKEN_REDIR_IN,
-    TOKEN_REDIR_OUT,
-    TOKEN_HEREDOC,
-    TOKEN_APPEND
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_HEREDOC,
+	TOKEN_APPEND
 }	t_token_type;
 
 typedef struct s_token
@@ -119,20 +119,22 @@ void	remove_quotes(t_token *token);
 char	*replace_str(char *str, char *rep, int start_i, int end_i);
 char	*ft_ternary_str(char *value, char *default_str);
 
-/* ----------- parser ----------------*/
+/* ----------- parser ---------------- */
 
-typedef enum e_redir_type {
+typedef enum e_redir_type
+{
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
 	REDIR_HEREDOC
 }	t_redir_type;
 
-typedef struct s_redir {
-    t_redir_type    type;
-    char            *file;
-	struct s_redir  *next;
-} 					t_redir;
+typedef struct s_redir
+{
+	t_redir_type	type;
+	char			*file;
+	struct s_redir	*next;
+}					t_redir;
 
 typedef struct s_cmd
 {
@@ -163,20 +165,15 @@ int		exec_builtin(t_cmd *cmd, t_env **env);
 
 /* ---------- builtins --------------*/
 
-int		builtin_cd(t_cmd *cmd, t_env **env);
-int 	builtin_echo(t_cmd *cmd);
-int 	builtin_env(t_env *env);
-int 	builtin_export(t_cmd *cmd, t_env **env);
-int 	builtin_unset(t_cmd *cmd, t_env **env);
-int 	builtin_exit(t_cmd *cmd);
-int 	builtin_pwd(void);
-size_t	env_len(char **env);
-char	*join_key_value(char *key, char *value);
-char	*take_env_value(char **env, char *key);
+int		ft_cd(t_cmd *cmd, t_env **env);
+int		ft_echo(t_cmd *cmd);
+int		ft_env(t_env *env);
+int		ft_export(t_cmd *cmd, t_env **env);
+int		ft_unset(t_cmd *cmd, t_env **env);
+int		ft_exit(t_cmd *cmd);
+int		ft_pwd(void);
 
 /* ------------ utils --------------- */
-
-
 
 /* -----------------------------------*/
 

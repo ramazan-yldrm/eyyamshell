@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   child.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 20:56:07 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 20:56:08 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd)
@@ -16,7 +28,8 @@ void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	apply_redirections(cmd);
+	if (apply_redirections(cmd) != 0)
+		cleanup_and_exit(1, NULL);
 	if (is_builtin(cmd->value[0]))
 		cleanup_and_exit(exec_builtin(cmd, env), NULL);
 	path = exec_path(cmd->value[0], *env);

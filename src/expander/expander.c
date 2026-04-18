@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:06:12 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:06:36 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	expand_single_node(t_token *token, t_env *env)
@@ -19,7 +31,7 @@ static void	expand_single_node(t_token *token, t_env *env)
 			in_dq = !in_dq;
 		else if (token->value[i] == '$' && !in_sq)
 		{
-			if (token->value[i + 1] != '?' && !ft_isalnum(token->value[i + 1]) 
+			if (token->value[i + 1] != '?' && !ft_isalnum(token->value[i + 1])
 				&& token->value[i + 1] != '_')
 			{
 				i++;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:04:14 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:04:16 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 static void	wait_children(pid_t last_pid)
@@ -29,6 +41,8 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 		if (cmd->next && pipe(fd) == -1)
 			cleanup_and_exit(1, "pipe failed");
 		pid = fork();
+		if (pid == -1)
+			cleanup_and_exit(1, "fork failed");
 		if (pid == 0)
 			child_process(cmd, env, prev_fd, fd);
 		if (prev_fd != -1)
@@ -40,5 +54,7 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 		}
 		cmd = cmd->next;
 	}
+	if (prev_fd != -1)
+		close(prev_fd);
 	wait_children(pid);
 }

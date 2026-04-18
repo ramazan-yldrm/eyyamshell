@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_dollar.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:07:04 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:07:46 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	handle_expansion(t_token *token, int *i, t_env *env)
@@ -13,7 +25,8 @@ void	handle_expansion(t_token *token, int *i, t_env *env)
 		j++;
 	else
 	{
-		while (token->value[j] && (ft_isalnum(token->value[j]) || token->value[j] == '_'))
+		while (token->value[j] && (ft_isalnum(token->value[j])
+				|| token->value[j] == '_'))
 			j++;
 	}
 	key = gc_substr(token->value, *i + 1, j - *i - 1, GC_TEMP);

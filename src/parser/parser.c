@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:09:18 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:09:18 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_redir(t_token_type type)
 {
-	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT 
-		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
+	return (type == TOKEN_REDIR_IN
+		|| type == TOKEN_REDIR_OUT
+		|| type == TOKEN_APPEND
+		|| type == TOKEN_HEREDOC);
 }
 
 static t_redir_type	get_redir_type(t_token_type type)
@@ -17,10 +31,9 @@ static t_redir_type	get_redir_type(t_token_type type)
 	return (REDIR_HEREDOC);
 }
 
-
-static int handle_redir(t_cmd *cmd, t_token **token)
+static int	handle_redir(t_cmd *cmd, t_token **token)
 {
-	t_token *curr;
+	t_token	*curr;
 
 	curr = *token;
 	if (curr->next && curr->next->type == TOKEN_WORD)
@@ -30,24 +43,26 @@ static int handle_redir(t_cmd *cmd, t_token **token)
 		return (0);
 	}
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-    if (!curr->next)
-        ft_putstr_fd("'newline'\n", 2);
-    else
-        ft_putstr_fd("'\n", 2);
-    return (1);
-
+	if (!curr->next)
+		ft_putstr_fd("'newline'\n", 2);
+	else
+		ft_putstr_fd("'\n", 2);
+	return (1);
 }
 
 static void	add_argument(t_cmd *cmd, char *value)
 {
 	int		i;
+	int		j;
 	char	**new_value;
 
 	i = 0;
 	while (cmd->value && cmd->value[i])
 		i++;
 	new_value = gc_malloc(sizeof(char *) * (i + 2), GC_PERM);
-	int j = -1;
+	if (!new_value)
+		return ;
+	j = 0;
 	while (j < i)
 	{
 		new_value[j] = cmd->value[j];
@@ -80,17 +95,18 @@ t_cmd	*parser(t_token *token)
 			if (tmp->type == TOKEN_PIPE)
 			{
 				tmp = tmp->next;
-				continue;
+				continue ;
 			}
 		}
 		if (is_redir(tmp->type))
 		{
-			handle_redir(curr, &tmp);
-			return (NULL);
+			if (handle_redir(curr, &tmp) != 0)
+				return (NULL);
 		}
 		else if (tmp->type == TOKEN_WORD)
 			add_argument(curr, tmp->value);
-		tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
 	return (cmd);
 }

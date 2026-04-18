@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:08:14 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:08:29 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_token	*handle_pipe(char **curr)
@@ -38,7 +50,7 @@ t_token	*handle_pipe(char **curr)
 	token = token_new_node(ft_substr(start, 0, i), type);
 	*curr += i + 1;
 	return (token);
-}*/ 
+}*/
 
 t_token	*handle_redirect(char **curr)
 {

@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 18:00:30 by asari             #+#    #+#             */
-/*   Updated: 2026/04/16 16:35:41 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:15:59 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	gc_free_type(t_gc_type type)
 				(*collector) = curr->next;
 			free(curr->value);
 			free(curr);
-
 		}
 		curr = next_node;
 	}

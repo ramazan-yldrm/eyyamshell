@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:00:48 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:03:02 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*exec_path(char *cmd, t_env *env)
@@ -7,11 +19,18 @@ char	*exec_path(char *cmd, t_env *env)
 	char	*full;
 	int		i;
 
-	if (!cmd || !*cmd) return (NULL);
+	if (!cmd || !*cmd)
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
-		return (access(cmd, X_OK) == 0 ? gc_strdup(cmd, GC_TEMP) : NULL);
+	{
+		if (access(cmd, X_OK) == 0)
+			return (gc_strdup(cmd, GC_TEMP));
+		else
+			return (NULL);
+	}
 	tmp = env_get_value("PATH", env);
-	if (!tmp) return (NULL);
+	if (!tmp)
+		return (NULL);
 	paths = gc_split(tmp, ':', GC_TEMP);
 	i = -1;
 	while (paths && paths[++i])

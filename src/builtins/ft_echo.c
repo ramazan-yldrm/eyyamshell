@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:19:43 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:20:16 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	builtin_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
 	int	i;
 	int	n_flag;
@@ -16,10 +28,10 @@ int	builtin_echo(t_cmd *cmd)
 	{
 		ft_putstr_fd(cmd->value[i], 1);
 		if (cmd->value[i + 1])
-			write(1, " ", 1);
+			ft_putchar_fd(' ', 1);
 		i++;
 	}
 	if (!n_flag)
-		write(1, "\n", 1);
+		ft_putchar_fd('\n', 1);
 	return (0);
 }

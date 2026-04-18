@@ -1,11 +1,10 @@
-NAME        = minishell
-CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -Iinc -Ilib 
-LIBS        = -Llib -lft -lreadline
-LIBFT       = lib/libft.a
+NAME		= minishell
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror -Iinc -Ilib
+LIBS		= -Llib -lft -lreadline
+LIBFT		= lib/libft.a
 
-CORE		= src/core/main.c \
-			  src/core/signals.c
+CORE		= src/core/main.c
 LEXER		= src/lexer/lexer.c \
 			  src/lexer/handlers.c \
 			  src/lexer/lexer_utils.c
@@ -18,15 +17,17 @@ PARSER		= src/parser/parser.c \
 EXECUTOR	= src/executor/executor.c \
 			  src/executor/pipeline.c \
 			  src/executor/child.c \
-              src/executor/path.c \
+			  src/executor/path.c \
 			  src/executor/redirs.c \
 			  src/executor/executor_utils.c
-BUILTINS	= src/builtins/ft_echo.c \
-			  src/builtins/ft_cd.c \
-			  src/builtins/ft_pwd_env.c \
-        	  src/builtins/ft_export.c \
-			  src/builtins/ft_unset.c \
-              src/builtins/ft_exit.c
+BUILTINS	= src/builtins/ft_cd.c \
+			  src/builtins/ft_echo.c \
+			  src/builtins/ft_env.c \
+			  src/builtins/ft_exit.c \
+			  src/builtins/ft_export.c \
+			  src/builtins/ft_pwd.c \
+			  src/builtins/ft_unset.c
+SIGNALS		= src/signals/signals.c
 UTILS		= src/utils/env/env_add_back.c \
 			  src/utils/env/env_check_missing.c \
 			  src/utils/env/env_get_value.c \
@@ -43,7 +44,7 @@ UTILS		= src/utils/env/env_add_back.c \
 			  src/utils/gc/get_collector.c \
 			  src/utils/cleanup_and_exit.c
 
-SRCS		=	$(CORE) $(LEXER) $(EXPANDER) $(PARSER) $(EXECUTOR) $(BUILTINS) $(UTILS)
+SRCS		=	$(CORE) $(LEXER) $(EXPANDER) $(PARSER) $(EXECUTOR) $(BUILTINS) $(SIGNALS) $(UTILS)
 
 OBJS		= $(SRCS:.c=.o)
 

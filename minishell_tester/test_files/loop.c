@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 21:23:40 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/18 21:23:45 by ryildiri         ###   ########.fr       */
+/*   Created: 2022/06/22 17:32:45 by lalex-ku          #+#    #+#             */
+/*   Updated: 2022/06/22 17:32:50 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 
-int	ft_unset(t_cmd *cmd, t_env **env)
+int	main(int argc, char const *argv[])
 {
-	int	i;
+	int	pid;
 
-	i = 1;
-	while (cmd->value[i])
+	pid = fork();
+	open("infile", O_RDONLY);
+	while (1)
 	{
-		env_remove_node(env, cmd->value[i]);
-		i++;
+		printf("Helloo miniHELL %i\n", pid);
+		sleep(1);
 	}
 	return (0);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_check_missing.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/18 21:13:36 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:15:36 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	update_shlvl(t_env **env_list)
@@ -12,7 +24,8 @@ static void	update_shlvl(t_env **env_list)
 	else
 	{
 		lvl = ft_atoi(current_val) + 1;
-		if (lvl < 0) lvl = 0;
+		if (lvl < 0)
+			lvl = 0;
 	}
 	new_val = gc_itoa(lvl, GC_PERM);
 	env_set_value(env_list, "SHLVL", new_val);
@@ -30,7 +43,7 @@ void	env_check_missing(t_env **env_list)
 	update_shlvl(env_list);
 	if (!env_get_value("PATH", *env_list))
 	{
-		env_set_value(env_list, "PATH", 
+		env_set_value(env_list, "PATH",
 			gc_strdup("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", GC_PERM));
 	}
 	if (!env_get_value("_", *env_list))

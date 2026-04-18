@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_remove_node.c                                  :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 21:13:47 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/18 21:14:36 by ryildiri         ###   ########.fr       */
+/*   Created: 2026/04/18 21:23:37 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/18 21:23:49 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env_remove_node(t_env **env_list, char *key)
+int	ft_pwd(void)
 {
-	t_env	*curr;
+	char	cwd[1024];
 
-	if (!env_list || !*env_list)
-		return ;
-	curr = (*env_list);
-	while (curr)
+	if (getcwd(cwd, sizeof(cwd)))
 	{
-		if (ft_strncmp(curr->key, key, ft_strlen(key) + 1) == 0)
-		{
-			if (curr->prev)
-				curr->prev->next = curr->next;
-			if (curr->next)
-				curr->next->prev = curr->prev;
-			if (curr == *env_list)
-				*env_list = curr->next;
-			return ;
-		}
-		curr = curr->next;
+		ft_putendl_fd(cwd, 1);
+		return (0);
 	}
+	perror("pwd");
+	return (1);
 }
