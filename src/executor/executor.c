@@ -26,27 +26,44 @@ static int	is_parent_builtin(t_cmd *cmd)
 		return (1);
 	return (0);
 }
+static void	unlink_heredocs(t_cmd *cmd)
+{
+	t_redir *r;
+
+	while (cmd)
+	{
+		r = cmd->redirs;
+		while (r)
+		{
+			if (r->type == REDIR_HEREDOC)
+				unlink(r->file);
+			r = r->next;
+		}
+		cmd = cmd->next;
+	}
+}
 
 void	executor(t_cmd *cmd, t_env **env)
 {
-	int	save_in;
-	int	save_out;
+	int	save_fds[2];
 
 	if (!cmd)
 		return ;
+	handle_heredocs(cmd);
 	if (!cmd->next && is_parent_builtin(cmd))
 	{
-		save_in = dup(STDIN_FILENO);
-		save_out = dup(STDOUT_FILENO);
+		save_fds[0] = dup(0);
+		save_fds[1] = dup(1);
 		if (apply_redirections(cmd) == 0)
 			g_exit_status = exec_builtin(cmd, env);
 		else
 			g_exit_status = 1;
-		dup2(save_in, STDIN_FILENO);
-		dup2(save_out, STDOUT_FILENO);
-		close(save_in);
-		close(save_out);
+		dup2(save_fds[0], 0);
+		dup2(save_fds[1], 1);
+		close(save_fds[0]);
+		close(save_fds[1]);
 	}
 	else
 		execute_pipeline(cmd, env);
+	unlink_heredocs(cmd);
 }

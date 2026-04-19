@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/18 21:44:21 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/19 10:12:06 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ void	executor(t_cmd *cmd, t_env **env);
 void	execute_pipeline(t_cmd *cmd, t_env **env);
 void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd);
 char	*exec_path(char *cmd, t_env *env);
+void	handle_heredocs(t_cmd *cmd);
 int		apply_redirections(t_cmd *cmd);
 
 int		is_builtin(char *cmd);

@@ -17,6 +17,7 @@ PARSER		= src/parser/parser.c \
 EXECUTOR	= src/executor/executor.c \
 			  src/executor/pipeline.c \
 			  src/executor/child.c \
+			  src/executor/heredoc.c \
 			  src/executor/path.c \
 			  src/executor/redirs.c \
 			  src/executor/executor_utils.c

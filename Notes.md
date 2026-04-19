@@ -6,4 +6,4 @@
 **-executorda hatalar düzeltildi**
 **-proje genelinde norm düzenlemeleri yapıldı henüz tamam değil**
 **-builtinler yazıldı**
-***3.AÇIKLAMALAR**
+***3.AÇIKLAMALAR***
