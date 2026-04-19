@@ -19,16 +19,17 @@ static int	is_parent_builtin(t_cmd *cmd)
 	if (!cmd || !cmd->value || !cmd->value[0])
 		return (0);
 	name = cmd->value[0];
-	if (ft_strncmp(name, "cd", 3) == 0 
+	if (ft_strncmp(name, "cd", 3) == 0
 		|| ft_strncmp(name, "export", 7) == 0
 		|| ft_strncmp(name, "unset", 6) == 0
 		|| ft_strncmp(name, "exit", 5) == 0)
 		return (1);
 	return (0);
 }
+
 static void	unlink_heredocs(t_cmd *cmd)
 {
-	t_redir *r;
+	t_redir	*r;
 
 	while (cmd)
 	{

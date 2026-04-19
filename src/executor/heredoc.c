@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/19 10:59:12 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/19 11:00:07 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	write_heredoc(char *delimiter, int fd)
@@ -16,6 +28,7 @@ static void	write_heredoc(char *delimiter, int fd)
 		free(line);
 	}
 }
+
 char	*generate_heredoc_name(void)
 {
 	static int	i = 0;
@@ -30,7 +43,7 @@ char	*generate_heredoc_name(void)
 
 void	handle_heredocs(t_cmd *cmd)
 {
-	t_redir *r;
+	t_redir	*r;
 	int		fd;
 	char	*tmp_name;
 
