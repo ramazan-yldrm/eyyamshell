@@ -1,6 +1,7 @@
 ### 1. YAPILACAKLAR
 - Built-in'ler fixlenecek
 - Executor fixlenecek
+- Static fonksiyonlar kontrol edilecek.
 
 ### 2. YAPILANLAR
 - Parser kısmında bulunan Segfault hatası düzeltildi.
