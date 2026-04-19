@@ -6,11 +6,28 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 10:59:12 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/19 11:00:07 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/19 15:19:06 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	unlink_heredocs(t_cmd *cmd)
+{
+	t_redir	*r;
+
+	while (cmd)
+	{
+		r = cmd->redirs;
+		while (r)
+		{
+			if (r->type == REDIR_HEREDOC)
+				unlink(r->file);
+			r = r->next;
+		}
+		cmd = cmd->next;
+	}
+}
 
 static void	write_heredoc(char *delimiter, int fd)
 {
@@ -18,6 +35,8 @@ static void	write_heredoc(char *delimiter, int fd)
 
 	while (1)
 	{
+		if (g_exit_status == 130)
+			break ;
 		line = readline("> ");
 		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{

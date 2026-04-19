@@ -27,23 +27,6 @@ static int	is_parent_builtin(t_cmd *cmd)
 	return (0);
 }
 
-static void	unlink_heredocs(t_cmd *cmd)
-{
-	t_redir	*r;
-
-	while (cmd)
-	{
-		r = cmd->redirs;
-		while (r)
-		{
-			if (r->type == REDIR_HEREDOC)
-				unlink(r->file);
-			r = r->next;
-		}
-		cmd = cmd->next;
-	}
-}
-
 void	executor(t_cmd *cmd, t_env **env)
 {
 	int	save_fds[2];
