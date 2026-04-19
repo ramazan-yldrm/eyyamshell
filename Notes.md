@@ -2,6 +2,7 @@
 - Built-in'ler fixlenecek
 - Executor fixlenecek
 - Static fonksiyonlar kontrol edilecek.
+- Norminette
 
 ### 2. YAPILANLAR
 - Parser kısmında bulunan Segfault hatası düzeltildi.
