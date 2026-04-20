@@ -6,23 +6,26 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 20:56:24 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/18 21:29:46 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:13:05 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(char *cmd)
+static int	is_builtin(t_cmd *cmd)
 {
-	if (!cmd)
+	char	*name;
+
+	if (!cmd || !cmd->value || !cmd->value[0])
 		return (0);
-	if (ft_strncmp(cmd, "echo", 5) == 0
-		||ft_strncmp(cmd, "cd", 3) == 0
-		|| ft_strncmp(cmd, "pwd", 4) == 0
-		|| ft_strncmp(cmd, "export", 7) == 0
-		|| ft_strncmp(cmd, "unset", 6) == 0
-		|| ft_strncmp(cmd, "env", 4) == 0
-		|| ft_strncmp(cmd, "exit", 5) == 0)
+	name = cmd->value[0];
+	if (ft_strncmp(name, "cd", 3) == 0
+		|| ft_strncmp(name, "echo", 5) == 0
+		|| ft_strncmp(name, "env", 4) == 0
+		|| ft_strncmp(name, "exit", 5) == 0
+		|| ft_strncmp(name, "export", 7) == 0
+		|| ft_strncmp(name, "pwd", 4) == 0
+		|| ft_strncmp(name, "unset", 6) == 0)
 		return (1);
 	return (0);
 }

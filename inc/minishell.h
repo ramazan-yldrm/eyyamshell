@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/20 08:34:15 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:13:38 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	unlink_heredocs(t_cmd *cmd);
 void	handle_error(t_error type, char *cmd, int exit_code);
 char	*exec_path(char *cmd, t_env *env);
 int		apply_redirections(t_cmd *cmd);
-int		is_builtin(char *cmd);
+int		is_builtin(t_cmd *cmd);
 int		exec_builtin(t_cmd *cmd, t_env **env);
 
 /* ---------- builtins --------------*/
