@@ -53,7 +53,7 @@ OBJS		= $(SRCS:.c=.o)
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
-	@make -C lib
+	@make -C lib 
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
