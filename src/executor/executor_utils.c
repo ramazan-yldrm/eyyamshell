@@ -6,13 +6,13 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 20:56:24 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/20 15:13:05 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:16:42 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_builtin(t_cmd *cmd)
+int	is_builtin(t_cmd *cmd)
 {
 	char	*name;
 

@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 20:56:07 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/20 08:45:37 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:16:26 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd)
 		cleanup_and_exit(g_exit_status, NULL);
 	if (!cmd->value || !cmd->value[0])
 		cleanup_and_exit(0, NULL);
-	if (is_builtin(cmd->value[0]))
-		cleanup_and_exit(exec_builtin(cmd, env), NULL);
 	path = exec_path(cmd->value[0], *env);
 	if (!path)
 	{
