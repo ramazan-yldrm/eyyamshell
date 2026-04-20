@@ -21,15 +21,12 @@ char	*exec_path(char *cmd, t_env *env)
 
 	if (!cmd || !*cmd)
 		return (NULL);
+	if (ft_strncmp(cmd, ".", 2) == 0 || ft_strncmp(cmd, "..", 3) == 0)
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (gc_strdup(cmd, GC_TEMP));
-		else
-			return (NULL);
-	}
+		return (gc_strdup(cmd, GC_TEMP));
 	tmp = env_get_value("PATH", env);
-	if (!tmp)
+	if (!tmp || !*tmp)
 		return (NULL);
 	paths = gc_split(tmp, ':', GC_TEMP);
 	i = -1;
@@ -37,7 +34,7 @@ char	*exec_path(char *cmd, t_env *env)
 	{
 		full = gc_strjoin(paths[i], "/", GC_TEMP);
 		full = gc_strjoin(full, cmd, GC_TEMP);
-		if (access(full, X_OK) == 0)
+		if (access(full, F_OK) == 0)
 			return (full);
 	}
 	return (NULL);

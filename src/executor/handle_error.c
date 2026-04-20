@@ -1,27 +1,30 @@
 #include "minishell.h"
 
+static char	*get_error_str(t_error type)
+{
+	if (type == ERR_CMD_NOT_FOUND) return ("command not found");
+	if (type == ERR_PERMISSION) return ("Permission denied");
+	if (type == ERR_IS_DIR) return ("is a directory");
+	if (type == ERR_NO_FILE) return ("No such file or directory");
+	if (type == ERR_MALLOC) return ("memory allocation failed");
+	if (type == ERR_PIPE) return ("pipe error");
+	if (type == ERR_FORK) return ("fork error");
+	return ("unknown error");
+}
 
 void	handle_error(t_error type, char *cmd, int exit_code)
 {
-	ft_putstr_fd("minishell: ", 2);
+	char	*full_msg;
+	char	*tmp;
+
+	full_msg = gc_strdup("minishell: ", GC_TEMP);
 	if (cmd)
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
+		tmp = gc_strjoin(full_msg, cmd, GC_TEMP);
+		full_msg = gc_strjoin(tmp, ": ", GC_TEMP);
 	}
-	if (type == ERR_CMD_NOT_FOUND)
-		ft_putendl_fd("command not found", 2);
-	else if (type == ERR_PERMISSION)
-		ft_putendl_fd("Permission denied", 2);
-	else if (type == ERR_IS_DIR)
-		ft_putendl_fd("is a directory", 2);
-	else if (type == ERR_NO_FILE)
-		ft_putendl_fd("No such file or directory", 2);
-	else if (type == ERR_MALLOC)
-		ft_putendl_fd("memory allocation failed", 2);
-	else if (type == ERR_PIPE)
-		ft_putendl_fd("pipe error", 2);
-	else if (type == ERR_FORK)
-		ft_putendl_fd("fork: Resource temporarily unavailable", 2);
+	tmp = gc_strjoin(full_msg, get_error_str(type), GC_TEMP);
+	full_msg = gc_strjoin(tmp, "\n", GC_TEMP);
+	write(2, full_msg, ft_strlen(full_msg));
 	g_exit_status = exit_code;
 }

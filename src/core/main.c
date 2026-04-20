@@ -1,19 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/20 08:56:35 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/20 08:56:35 by ryildiri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
 #include "minishell.h"
+#include "libft.h"
 
 int	g_exit_status = 0;
 
@@ -24,11 +10,28 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	t_env	*env_list;
 
-	(void)argc;
-	(void)argv;
 	setup_signals();
 	env_list = env_init(envp);
 	env_check_missing(&env_list);
+
+	// 🔥 BURASI: -c desteği
+	if (argc == 3 && strcmp(argv[1], "-c") == 0)
+	{
+		input = argv[2];
+		token = lexer(input);
+		if (token)
+		{
+			expander(token, env_list);
+			remove_quotes(token);
+			cmd = parser(token);
+			if (cmd)
+				executor(cmd, &env_list);
+		}
+		gc_free_type(GC_TEMP);
+		return (g_exit_status);
+	}
+
+	// 🔁 INTERACTIVE MOD
 	while (1)
 	{
 		input = readline("minishell$ ");
@@ -44,12 +47,6 @@ int	main(int argc, char **argv, char **envp)
 		if (token)
 		{
 			expander(token, env_list);
-			remove_empty_tokens(&token);
-			if (!token)
-			{
-				gc_free_type(GC_TEMP);
-				continue ;
-			}
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
