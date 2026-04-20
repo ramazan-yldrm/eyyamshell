@@ -35,9 +35,12 @@ static void	write_heredoc(char *delimiter, int fd)
 
 	while (1)
 	{
-		if (g_exit_status == 130)
-			break ;
 		line = readline("> ");
+		if (g_exit_status == 130)
+		{
+			free(line);
+			break ;
+		}
 		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
 			free(line);

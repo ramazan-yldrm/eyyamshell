@@ -15,7 +15,10 @@
 void	cleanup_and_exit(int exit_code, char *msg)
 {
 	if (msg)
-		perror(msg);
+	{
+		write(2, msg, ft_strlen(msg));
+		write(2, "\n", 1);
+	}
 	rl_clear_history();
 	gc_free_all();
 	exit(exit_code);
