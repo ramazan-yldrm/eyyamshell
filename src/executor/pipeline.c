@@ -6,11 +6,11 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 21:04:14 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/18 21:04:16 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/19 19:30:23 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "minishell.h"
 
 static void	wait_children(pid_t last_pid)
 {
@@ -39,10 +39,16 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 	while (cmd)
 	{
 		if (cmd->next && pipe(fd) == -1)
-			cleanup_and_exit(1, "pipe failed");
+		{
+			handle_error(ERR_PIPE, "pipe", 1);
+			break ;
+		}
 		pid = fork();
 		if (pid == -1)
-			cleanup_and_exit(1, "fork failed");
+		{
+			handle_error(ERR_FORK, "fork", 1);
+			break ;
+		}
 		if (pid == 0)
 			child_process(cmd, env, prev_fd, fd);
 		if (prev_fd != -1)

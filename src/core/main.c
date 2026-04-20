@@ -19,6 +19,8 @@
 
 int	g_exit_status = 0;
 
+#include <string.h>
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -26,11 +28,29 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	t_env	*env_list;
 
-	(void)argc;
-	(void)argv;
 	setup_signals();
 	env_list = env_init(envp);
 	env_check_missing(&env_list);
+
+	// 🔥 BURASI YENİ: -c desteği
+	if (argc == 3 && strcmp(argv[1], "-c") == 0)
+	{
+		input = argv[2];
+
+		token = lexer(input);
+		if (token)
+		{
+			expander(token, env_list);
+			remove_quotes(token);
+			cmd = parser(token);
+			if (cmd)
+				executor(cmd, &env_list);
+		}
+		gc_free_type(GC_TEMP);
+		return (g_exit_status);
+	}
+
+	// 🔁 INTERACTIVE MOD (aynı kalıyor)
 	while (1)
 	{
 		input = readline("minishell$ ");

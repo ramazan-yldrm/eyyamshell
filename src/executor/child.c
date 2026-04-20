@@ -6,12 +6,11 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 20:56:07 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/19 15:20:07 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/20 08:45:37 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 #include <sys/stat.h>
 
 static int	is_directory(char *path)
@@ -36,17 +35,24 @@ void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd)
 		close(fd[1]);
 	}
 	if (apply_redirections(cmd) != 0)
-		cleanup_and_exit(1, NULL);
+		cleanup_and_exit(g_exit_status, NULL);
 	if (!cmd->value || !cmd->value[0])
 		cleanup_and_exit(0, NULL);
 	if (is_builtin(cmd->value[0]))
 		cleanup_and_exit(exec_builtin(cmd, env), NULL);
 	path = exec_path(cmd->value[0], *env);
 	if (!path)
-		cleanup_and_exit(127, cmd->value[0]);
+	{
+		handle_error(ERR_CMD_NOT_FOUND, cmd->value[0], 127);
+		cleanup_and_exit(g_exit_status, NULL);
+	}
 	if (is_directory(path))
-		cleanup_and_exit(126, path);
+	{
+		handle_error(ERR_IS_DIR, path, 126);
+		cleanup_and_exit(g_exit_status, NULL);
+	}
 	env_arr = env_to_array(*env);
 	execve(path, cmd->value, env_arr);
-	cleanup_and_exit(126, path);
+	handle_error(ERR_PERMISSION, path, 126);
+	cleanup_and_exit(g_exit_status, NULL);
 }

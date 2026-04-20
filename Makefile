@@ -20,6 +20,7 @@ EXECUTOR	= src/executor/executor.c \
 			  src/executor/heredoc.c \
 			  src/executor/path.c \
 			  src/executor/redirs.c \
+			  src/executor/handle_error.c \
 			  src/executor/executor_utils.c
 BUILTINS	= src/builtins/ft_cd.c \
 			  src/builtins/ft_echo.c \
