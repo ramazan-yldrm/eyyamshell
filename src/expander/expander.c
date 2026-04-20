@@ -48,7 +48,36 @@ void	expander(t_token *token, t_env *env)
 {
 	while (token)
 	{
+		if (token->prev && token->prev->type == TOKEN_HEREDOC)
+		{
+			token = token->next;
+			continue ;
+		}
 		expand_single_node(token, env);
 		token = token->next;
+	}
+}
+
+void	remove_empty_tokens(t_token **tokens)
+{
+	t_token	*curr;
+	t_token	*next;
+
+	if (!tokens || !*tokens)
+		return ;
+	curr = *tokens;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->type == TOKEN_WORD && curr->value[0] == '\0')
+		{
+			if (curr->prev)
+				curr->prev->next = curr->next;
+			else
+				*tokens = curr->next;
+			if (curr->next)
+				curr->next->prev = curr->prev;
+		}
+		curr = next;
 	}
 }

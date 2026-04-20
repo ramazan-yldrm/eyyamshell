@@ -23,5 +23,6 @@ t_env	*env_new_node(char *key, char *value)
 	new->key = key;
 	new->value = value;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }

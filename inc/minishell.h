@@ -117,6 +117,7 @@ int		is_operator(char c);
 void	expander(t_token *token, t_env *env);
 void	handle_expansion(t_token *token, int *i, t_env *env);
 void	remove_quotes(t_token *token);
+void	remove_empty_tokens(t_token **tokens);
 
 char	*replace_str(char *str, char *rep, int start_i, int end_i);
 char	*ft_ternary_str(char *value, char *default_str);

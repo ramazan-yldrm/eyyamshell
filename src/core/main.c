@@ -44,6 +44,12 @@ int	main(int argc, char **argv, char **envp)
 		if (token)
 		{
 			expander(token, env_list);
+			remove_empty_tokens(&token);
+			if (!token)
+			{
+				gc_free_type(GC_TEMP);
+				continue ;
+			}
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
