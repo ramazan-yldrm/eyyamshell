@@ -65,12 +65,17 @@ void	handle_heredocs(t_cmd *cmd)
 	t_redir	*r;
 	int		fd;
 	char	*tmp_name;
+	int		stdin_backup;
 
+	stdin_backup = dup(STDIN_FILENO);
+	setup_heredoc_signals();
 	while (cmd)
 	{
 		r = cmd->redirs;
 		while (r)
 		{
+			if (g_exit_status == 130)
+				break ;
 			if (r->type == REDIR_HEREDOC)
 			{
 				tmp_name = generate_heredoc_name();
@@ -79,10 +84,17 @@ void	handle_heredocs(t_cmd *cmd)
 					return ;
 				write_heredoc(r->file, fd);
 				close(fd);
+				if (g_exit_status == 130)
+					break ;
 				r->file = tmp_name;
 			}
 			r = r->next;
 		}
+		if (g_exit_status == 130)
+			break ;
 		cmd = cmd->next;
 	}
+	dup2(stdin_backup, STDIN_FILENO);
+	close(stdin_backup);
+	setup_signals();
 }

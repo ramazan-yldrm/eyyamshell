@@ -36,6 +36,7 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 	pid_t	pid;
 
 	prev_fd = -1;
+	ignore_signals();
 	while (cmd)
 	{
 		if (cmd->next && pipe(fd) == -1)
@@ -50,7 +51,10 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 			break ;
 		}
 		if (pid == 0)
+		{
+			setup_child_signals();
 			child_process(cmd, env, prev_fd, fd);
+		}
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -63,4 +67,5 @@ void	execute_pipeline(t_cmd *cmd, t_env **env)
 	if (prev_fd != -1)
 		close(prev_fd);
 	wait_children(pid);
+	setup_signals();
 }

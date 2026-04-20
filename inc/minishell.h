@@ -29,6 +29,8 @@ extern int	g_exit_status;
 
 void	setup_signals(void);
 void	setup_child_signals(void);
+void	setup_heredoc_signals(void);
+void	ignore_signals(void);
 
 /* ------------ env --------------- */
 

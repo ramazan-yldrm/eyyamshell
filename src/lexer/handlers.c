@@ -98,6 +98,7 @@ t_token	*handle_word(char **curr)
 	if (quote != 0)
 	{
 		ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2);
+		g_exit_status = 2;
 		return (NULL);
 	}
 	*curr += i;

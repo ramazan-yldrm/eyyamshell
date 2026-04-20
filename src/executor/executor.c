@@ -34,6 +34,11 @@ void	executor(t_cmd *cmd, t_env **env)
 	if (!cmd)
 		return ;
 	handle_heredocs(cmd);
+	if (g_exit_status == 130)
+	{
+		unlink_heredocs(cmd);
+		return ;
+	}
 	if (!cmd->next && is_parent_builtin(cmd))
 	{
 		save_fds[0] = dup(0);

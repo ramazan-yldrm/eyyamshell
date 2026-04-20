@@ -42,11 +42,15 @@ static int	handle_redir(t_cmd *cmd, t_token **token)
 		*token = curr->next;
 		return (0);
 	}
-	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	if (!curr->next)
-		ft_putstr_fd("'newline'\n", 2);
+		ft_putstr_fd("newline'\n", 2);
 	else
+	{
+		ft_putstr_fd(curr->next->value, 2);
 		ft_putstr_fd("'\n", 2);
+	}
+	g_exit_status = 2;
 	return (1);
 }
 
@@ -73,6 +77,32 @@ static void	add_argument(t_cmd *cmd, char *value)
 	cmd->value = new_value;
 }
 
+static int	check_syntax(t_token *token)
+{
+	t_token	*tmp;
+
+	if (!token)
+		return (1);
+	if (token->type == TOKEN_PIPE)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+		g_exit_status = 2;
+		return (0);
+	}
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_PIPE && (!tmp->next || tmp->next->type == TOKEN_PIPE))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+			g_exit_status = 2;
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 t_cmd	*parser(t_token *token)
 {
 	t_cmd	*cmd;
@@ -80,7 +110,7 @@ t_cmd	*parser(t_token *token)
 	t_cmd	*curr;
 	t_token	*tmp;
 
-	if (!token)
+	if (!token || !check_syntax(token))
 		return (NULL);
 	cmd = NULL;
 	curr = NULL;

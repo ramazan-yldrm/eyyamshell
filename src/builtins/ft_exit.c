@@ -34,7 +34,7 @@ int	ft_exit(t_cmd *cmd)
 {
 	int	exit_code;
 
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", 2);
 	if (!cmd->value[1])
 		cleanup_and_exit(g_exit_status, NULL);
 	if (!is_numeric(cmd->value[1]))

@@ -50,3 +50,39 @@ void	setup_child_signals(void)
 	sigaction(SIGINT, &sa_dfl, NULL);
 	sigaction(SIGQUIT, &sa_dfl, NULL);
 }
+
+void	ignore_signals(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	heredoc_sigint_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_exit_status = 130;
+		close(STDIN_FILENO);
+		write(STDOUT_FILENO, "\n", 1);
+	}
+}
+
+void	setup_heredoc_signals(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = heredoc_sigint_handler;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
+}
