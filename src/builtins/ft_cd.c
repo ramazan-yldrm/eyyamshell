@@ -18,6 +18,11 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 	char	old_pwd[1024];
 
 	path = cmd->value[1];
+	if (path && cmd->value[2])
+	{
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		return (1);
+	}
 	if (!path)
 	{
 		path = env_get_value("HOME", *env);

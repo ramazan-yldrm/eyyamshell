@@ -20,7 +20,7 @@ int	ft_exit(t_cmd *cmd)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(cmd->value[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		cleanup_and_exit(255, NULL);
+		cleanup_and_exit(2, NULL);
 	}
 	if (cmd->value[2])
 	{
