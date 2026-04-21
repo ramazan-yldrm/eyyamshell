@@ -63,7 +63,7 @@ static void	add_argument(t_cmd *cmd, char *value)
 	i = 0;
 	while (cmd->value && cmd->value[i])
 		i++;
-	new_value = gc_malloc(sizeof(char *) * (i + 2), GC_PERM);
+	new_value = gc_malloc(sizeof(char *) * (i + 2), GC_TEMP);
 	if (!new_value)
 		return ;
 	j = 0;
@@ -72,7 +72,7 @@ static void	add_argument(t_cmd *cmd, char *value)
 		new_value[j] = cmd->value[j];
 		j++;
 	}
-	new_value[i] = gc_strdup(value, GC_PERM);
+	new_value[i] = gc_strdup(value, GC_TEMP);
 	new_value[i + 1] = NULL;
 	cmd->value = new_value;
 }

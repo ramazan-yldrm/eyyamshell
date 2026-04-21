@@ -16,7 +16,7 @@ t_cmd	*cmd_new_node(void)
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = gc_malloc(sizeof(t_cmd), GC_PERM);
+	new_cmd = gc_malloc(sizeof(t_cmd), GC_TEMP);
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->value = NULL;
@@ -30,11 +30,11 @@ t_redir	*redir_new_node(t_redir_type type, char *file)
 {
 	t_redir	*new_redir;
 
-	new_redir = gc_malloc(sizeof(t_redir), GC_PERM);
+	new_redir = gc_malloc(sizeof(t_redir), GC_TEMP);
 	if (!new_redir)
 		return (NULL);
 	new_redir->type = type;
-	new_redir->file = gc_strdup(file, GC_PERM);
+	new_redir->file = gc_strdup(file, GC_TEMP);
 	new_redir->next = NULL;
 	return (new_redir);
 }
