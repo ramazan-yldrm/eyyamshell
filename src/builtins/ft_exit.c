@@ -12,12 +12,14 @@ static int	is_numeric(char *str)
 
 int	ft_exit(t_cmd *cmd)
 {
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", 2);
 	if (!cmd->value[1])
 		cleanup_and_exit(g_exit_status, NULL);
 	if (!is_numeric(cmd->value[1]))
 	{
-		handle_error(ERR_PERMISSION, cmd->value[1], 255);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(cmd->value[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		cleanup_and_exit(255, NULL);
 	}
 	if (cmd->value[2])
@@ -25,6 +27,6 @@ int	ft_exit(t_cmd *cmd)
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (1);
 	}
-	cleanup_and_exit(ft_atoi(cmd->value[1]) % 256, NULL);
+	cleanup_and_exit((unsigned char)ft_atoi(cmd->value[1]), NULL);
 	return (0);
 }

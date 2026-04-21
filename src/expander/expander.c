@@ -31,6 +31,11 @@ static void	expand_single_node(t_token *token, t_env *env)
 			in_dq = !in_dq;
 		else if (token->value[i] == '$' && !in_sq)
 		{
+			if (!in_dq && (token->value[i + 1] == '\'' || token->value[i + 1] == '\"'))
+			{
+				ft_memmove(&token->value[i], &token->value[i + 1], ft_strlen(&token->value[i + 1]) + 1);
+				continue ;
+			}
 			if (token->value[i + 1] != '?' && !ft_isalnum(token->value[i + 1])
 				&& token->value[i + 1] != '_')
 			{

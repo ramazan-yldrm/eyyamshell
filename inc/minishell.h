@@ -163,13 +163,14 @@ typedef enum e_error {
     ERR_MALLOC,        // 1
     ERR_PIPE,          // 1
     ERR_FORK,          // 1
-    ERR_NO_FILE        // 1
+    ERR_NO_FILE,       // 1
+    ERR_NUMERIC_ARG    // 255
 } t_error;
 
 void	executor(t_cmd *cmd, t_env **env);
 void	execute_pipeline(t_cmd *cmd, t_env **env);
 void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd);
-void	handle_heredocs(t_cmd *cmd);
+int		handle_heredocs(t_cmd *cmd);
 void	unlink_heredocs(t_cmd *cmd);
 void	handle_error(t_error type, char *cmd, int exit_code);
 char	*exec_path(char *cmd, t_env *env);

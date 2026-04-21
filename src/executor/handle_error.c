@@ -4,11 +4,12 @@ static char	*get_error_str(t_error type)
 {
 	if (type == ERR_CMD_NOT_FOUND) return ("command not found");
 	if (type == ERR_PERMISSION) return ("Permission denied");
-	if (type == ERR_IS_DIR) return ("is a directory");
+	if (type == ERR_IS_DIR) return ("Is a directory");
 	if (type == ERR_NO_FILE) return ("No such file or directory");
 	if (type == ERR_MALLOC) return ("memory allocation failed");
 	if (type == ERR_PIPE) return ("pipe error");
 	if (type == ERR_FORK) return ("fork error");
+	if (type == ERR_NUMERIC_ARG) return ("numeric argument required");
 	return ("unknown error");
 }
 

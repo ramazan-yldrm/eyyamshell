@@ -15,13 +15,10 @@
 void	executor(t_cmd *cmd, t_env **env)
 {
 	int	save_fds[2];
-	int	old_status;
 
 	if (!cmd)
 		return ;
-	old_status = g_exit_status;
-	handle_heredocs(cmd);
-	if (g_exit_status == 130 && old_status != 130)
+	if (handle_heredocs(cmd) == 1)
 	{
 		unlink_heredocs(cmd);
 		return ;

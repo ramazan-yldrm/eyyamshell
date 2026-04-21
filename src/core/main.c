@@ -22,6 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		if (token)
 		{
 			expander(token, env_list);
+			remove_empty_tokens(&token);
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
@@ -47,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		if (token)
 		{
 			expander(token, env_list);
+			remove_empty_tokens(&token);
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)

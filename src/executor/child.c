@@ -38,6 +38,11 @@ void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd)
 		cleanup_and_exit(g_exit_status, NULL);
 	if (!cmd->value || !cmd->value[0])
 		cleanup_and_exit(0, NULL);
+	if (is_builtin(cmd))
+	{
+		g_exit_status = exec_builtin(cmd, env);
+		cleanup_and_exit(g_exit_status, NULL);
+	}
 	if (ft_strncmp(cmd->value[0], ".", 2) == 0)
 	{
 		handle_error(ERR_CMD_NOT_FOUND, ".", 127); // Veya tester 127 bekliyorsa
