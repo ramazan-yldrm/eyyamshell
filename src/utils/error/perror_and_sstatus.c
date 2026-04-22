@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:22:39 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 17:26:58 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,21 @@
 
 void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code)
 {
-	ft_putstr_fd("minishell: ", 2);
+	char	buf[1024];
+
+	ft_strlcpy(buf, "minishell: ", 1024);
 	if (cmd)
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": ", 2);
+		ft_strlcat(buf, cmd, 1024);
+		ft_strlcat(buf, ": ", 1024);
 	}
 	if (arg)
 	{
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": ", 2);
+		ft_strlcat(buf, arg, 1024);
+		ft_strlcat(buf, ": ", 1024);
 	}
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
+	ft_strlcat(buf, msg, 1024);
+	ft_strlcat(buf, "\n", 1024);
+	write(STDERR_FILENO, buf, ft_strlen(buf));
 	g_exit_status = exit_code;
 }
