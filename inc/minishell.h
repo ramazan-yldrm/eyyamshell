@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/22 14:25:13 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:40:16 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define ERR_PERM "Permission denied"
 # define ERR_SYNTAX "syntax error near unexpected token"
 # define ERR_NO_FILE "No such file or directory"
-# define ERR_IS_DIR "is a directory"
+# define ERR_IS_DIR "Is a directory"
 # define ERR_NOT_DIR "Not a directory"
 # define ERR_HOME_NOT_SET "HOME not set"
 # define ERR_TOO_MANY_ARGS "too many arguments"
@@ -46,7 +46,7 @@
 # define EXIT_CMD_NOT_FOUND 127
 # define EXIT_SIGINT 130
 # define EXIT_SYNTAX_ERR 258
-# define EXIT_OUT_OF_RANGE 255
+# define EXIT_OUT_OF_RANGE 2
 
 void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
 

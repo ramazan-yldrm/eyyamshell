@@ -16,6 +16,6 @@
 - cleanup_and_exit önceden hata çıkıtısı da verirdi şimidi sadece temizlik çıkış yapıyor.
 - şimidilik sadece executorda çalışan hata mesajı ayıklama yapısı kuruldu, istenilirse hızlı ve kolayca bütün projeye entegre edilebilir
 - builtinler tamamlandı
-- executer tamamlandı
+- executer tamamlandıc
 
 ### 3. AÇIKLAMALAR

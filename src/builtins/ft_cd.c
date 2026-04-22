@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:32:02 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:43:25 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,14 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 	char	*path;
 	char	old_pwd[PATH_MAX];
 
+	if (cmd->value[1] && cmd->value[2])
+	{
+		perror_and_sstatus("cd", NULL, ERR_TOO_MANY_ARGS, EXIT_FAILURE);
+		return (EXIT_FAILURE);
+	}
 	path = resolve_cd_path(cmd, *env);
 	if (!path)
-		return (1);
+		return (EXIT_FAILURE);
 	if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 		old_pwd[0] = '\0';
 	if (chdir(path) != 0)
@@ -56,5 +61,5 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		return (EXIT_FAILURE);
 	}
 	update_pwd_env(env, old_pwd);
-	return (0);
+	return (EXIT_SUCCESS);
 }
