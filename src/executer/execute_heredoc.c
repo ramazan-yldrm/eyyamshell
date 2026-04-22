@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 22:02:05 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:16:45 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 19:53:23 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ static void	heredoc_child_loop(int write_fd, char *delimiter)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line
-			|| ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		if (!line)
+		{
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			break ;
+		}
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
 			free(line);
 			break ;
@@ -40,6 +44,8 @@ static int	heredoc_wait(pid_t pid, int *fd)
 	if (WIFSIGNALED(status)
 		|| (WIFEXITED(status) && WEXITSTATUS(status) != 0))
 	{
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
 		close(fd[0]);
 		g_exit_status = 130;
 		return (-1);
@@ -125,5 +131,5 @@ int	prepare_heredoc(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	setup_signals();
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

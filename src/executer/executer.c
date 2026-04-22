@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 19:59:05 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 12:33:22 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 19:17:15 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ void	executer(t_cmd *cmd, t_env **env)
 	if (!cmd)
 		return ;
 	tmp = cmd;
-	if (prepare_heredoc(cmd) == -1)
-	{
-		g_exit_status = 130;
+	if (prepare_heredoc(cmd) == EXIT_FAILURE)
 		return ;
-	}
 	if (!cmd->next && is_builtin(cmd))
 		execute_oneline(cmd, env);
 	else
