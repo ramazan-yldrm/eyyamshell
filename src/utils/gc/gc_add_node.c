@@ -24,7 +24,8 @@ void	gc_add_node(void *value, t_gc_type type)
 	if (!new_node)
 	{
 		free(value);
-		cleanup_and_exit(1, "GC: Node allocation failed");
+		ft_putendl_fd("minishell: fatal: malloc failed", STDERR_FILENO);
+		cleanup_and_exit(1);
 	}
 	new_node->value = value;
 	new_node->type = type;

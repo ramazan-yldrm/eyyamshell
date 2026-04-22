@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   perror_and_sstatus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 21:23:37 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:22:22 by ryildiri         ###   ########.fr       */
+/*   Created: 2026/04/22 09:00:00 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/22 14:22:39 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <string.h>
+#include <errno.h>
 
-int	ft_pwd(t_env *env)
+void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code)
 {
-	char	*cwd;
-	char	*pwd_env;
-
-	cwd = getcwd(NULL, 0);
-	if (cwd)
+	ft_putstr_fd("minishell: ", 2);
+	if (cmd)
 	{
-		ft_putendl_fd(cwd, 1);
-		free(cwd);
-		return (EXIT_SUCCESS);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
 	}
-	pwd_env = env_get_value("PWD", env);
-	if (pwd_env && *pwd_env)
+	if (arg)
 	{
-		ft_putendl_fd(pwd_env, 1);
-		return (EXIT_SUCCESS);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
 	}
-	perror_and_sstatus("pwd", NULL, strerror(errno), EXIT_FAILURE);
-	return (EXIT_FAILURE);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
+	g_exit_status = exit_code;
 }

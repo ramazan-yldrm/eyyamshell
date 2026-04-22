@@ -26,7 +26,7 @@ int	main(int argc, char **argv, char **envp)
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
-				executor(cmd, &env_list);
+				executer(cmd, &env_list);
 		}
 		gc_free_type(GC_TEMP);
 		return (g_exit_status);
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 		{
 			printf("exit\n");
-			cleanup_and_exit(g_exit_status, NULL);
+			cleanup_and_exit(g_exit_status);
 		}
 		gc_add_node(input, GC_TEMP);
 		if (*input)
@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 			remove_quotes(token);
 			cmd = parser(token);
 			if (cmd)
-				executor(cmd, &env_list);
+				executer(cmd, &env_list);
 		}
 		gc_free_type(GC_TEMP);
 	}

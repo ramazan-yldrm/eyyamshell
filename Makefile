@@ -14,22 +14,21 @@ EXPANDER	= src/expander/expander.c \
 			  src/expander/expander_utils.c
 PARSER		= src/parser/parser.c \
 			  src/parser/parser_utils.c
-EXECUTOR	= src/executor/executor.c \
-			  src/executor/pipeline.c \
-			  src/executor/child.c \
-			  src/executor/heredoc.c \
-			  src/executor/path.c \
-			  src/executor/redirs.c \
-			  src/executor/handle_error.c \
-			  src/executor/executor_utils.c
+EXECUTER	= src/executer/execute_child.c \
+			  src/executer/execute_heredoc.c \
+			  src/executer/execute_path.c \
+			  src/executer/execute_pipeline.c \
+			  src/executer/execute_redirs.c \
+			  src/executer/executer_utils.c \
+			  src/executer/executer.c
 BUILTINS	= src/builtins/ft_cd.c \
 			  src/builtins/ft_echo.c \
 			  src/builtins/ft_env.c \
 			  src/builtins/ft_exit.c \
 			  src/builtins/ft_export.c \
 			  src/builtins/ft_pwd.c \
-			  src/builtins/ft_unset.c
-SIGNALS		= src/signals/signals.c
+			  src/builtins/ft_unset.c \
+			  src/builtins/builtin_utils.c
 UTILS		= src/utils/env/env_add_back.c \
 			  src/utils/env/env_check_missing.c \
 			  src/utils/env/env_get_value.c \
@@ -38,15 +37,17 @@ UTILS		= src/utils/env/env_add_back.c \
 			  src/utils/env/env_remove_node.c \
 			  src/utils/env/env_set_value.c \
 			  src/utils/env/env_to_array.c \
+			  src/utils/error/perror_and_sstatus.c \
 			  src/utils/gc/gc_add_node.c \
 			  src/utils/gc/gc_free_all.c \
 			  src/utils/gc/gc_free_type.c \
 			  src/utils/gc/gc_malloc.c \
 			  src/utils/gc/gc_wrappers.c \
 			  src/utils/gc/get_collector.c \
+			  src/utils/signals/signals.c \
 			  src/utils/cleanup_and_exit.c
 
-SRCS		=	$(CORE) $(LEXER) $(EXPANDER) $(PARSER) $(EXECUTOR) $(BUILTINS) $(SIGNALS) $(UTILS)
+SRCS		=	$(CORE) $(LEXER) $(EXPANDER) $(PARSER) $(EXECUTER) $(BUILTINS) $(UTILS)
 
 OBJS		= $(SRCS:.c=.o)
 

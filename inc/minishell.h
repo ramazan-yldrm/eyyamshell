@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/20 15:13:38 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:25:13 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,33 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <errno.h>
+
+/* ------------ error --------------- */
+
+# define ERR_MALLOC "memory allocation failed"
+# define ERR_PIPE "pipe failed"
+# define ERR_FORK "fork failed"
+# define ERR_CMD "command not found"
+# define ERR_PERM "Permission denied"
+# define ERR_SYNTAX "syntax error near unexpected token"
+# define ERR_NO_FILE "No such file or directory"
+# define ERR_IS_DIR "is a directory"
+# define ERR_NOT_DIR "Not a directory"
+# define ERR_HOME_NOT_SET "HOME not set"
+# define ERR_TOO_MANY_ARGS "too many arguments"
+# define ERR_NUM_REQ "numeric argument required"
+# define ERR_IDENTIFIER "not a valid identifier"
+
+# define EXIT_SUCCESS 0
+# define EXIT_FAILURE 1
+# define EXIT_PERM_DENIED 126
+# define EXIT_CMD_NOT_FOUND 127
+# define EXIT_SIGINT 130
+# define EXIT_SYNTAX_ERR 258
+# define EXIT_OUT_OF_RANGE 255
+
+void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
 
 /* ---------- signals ------------- */
 
@@ -72,7 +99,6 @@ void	*gc_malloc(size_t size, t_gc_type type);
 void	gc_add_node(void *value, t_gc_type type);
 void	gc_free_type(t_gc_type type);
 void	gc_free_all(void);
-void	cleanup_and_exit(int exit_code, char *msg);
 
 char	*gc_strdup(const char *s1, t_gc_type type);
 char	*gc_strjoin(char const *s1, char const *s2, t_gc_type type);
@@ -134,10 +160,12 @@ typedef enum e_redir_type
 
 typedef struct s_redir
 {
-	t_redir_type	type;
 	char			*file;
+	int             heredoc_fd;
+	t_redir_type	type;
 	struct s_redir	*next;
 }					t_redir;
+
 
 typedef struct s_cmd
 {
@@ -156,27 +184,16 @@ void	redir_add_back(t_redir **redir, t_redir *new_redir);
 
 /* ---------- executor --------------*/
 
-typedef enum e_error {
-    ERR_CMD_NOT_FOUND, // 127
-    ERR_PERMISSION,    // 126
-    ERR_IS_DIR,        // 126
-    ERR_MALLOC,        // 1
-    ERR_PIPE,          // 1
-    ERR_FORK,          // 1
-    ERR_NO_FILE,       // 1
-    ERR_NUMERIC_ARG    // 255
-} t_error;
-
-void	executor(t_cmd *cmd, t_env **env);
+void	executer(t_cmd *cmd, t_env **env);
 void	execute_pipeline(t_cmd *cmd, t_env **env);
-void	child_process(t_cmd *cmd, t_env **env, int prev_fd, int *fd);
-int		handle_heredocs(t_cmd *cmd);
-void	unlink_heredocs(t_cmd *cmd);
-void	handle_error(t_error type, char *cmd, int exit_code);
-char	*exec_path(char *cmd, t_env *env);
-int		apply_redirections(t_cmd *cmd);
+void	execute_child(t_cmd *cmd, t_env **env, int prev_fd, int *fd);
+void	child_clean_exit(int exit_code);
+void	close_heredoc_fds(t_cmd *cmd);
+char	*execute_path(char *cmd, t_env *env);
+int		prepare_heredoc(t_cmd *cmd);
+int		execute_redirs(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
-int		exec_builtin(t_cmd *cmd, t_env **env);
+int		execute_builtin(t_cmd *cmd, t_env **env);
 
 /* ---------- builtins --------------*/
 
@@ -186,9 +203,13 @@ int		ft_env(t_env *env);
 int		ft_export(t_cmd *cmd, t_env **env);
 int		ft_unset(t_cmd *cmd, t_env **env);
 int		ft_exit(t_cmd *cmd);
-int		ft_pwd(void);
+int		ft_pwd(t_env *env);
+int		is_valid_id(char *str);
+int		is_numeric_str(char *str);
 
 /* ------------ utils --------------- */
+
+void	cleanup_and_exit(int exit_code);
 
 /* -----------------------------------*/
 
