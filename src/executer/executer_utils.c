@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 14:23:18 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:23:21 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/22 23:26:40 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	execute_builtin(t_cmd *cmd, t_env **env)
 	if (ft_strncmp(name, "unset", 6) == 0)
 		return (ft_unset(cmd, env));
 	if (ft_strncmp(name, "env", 4) == 0)
-		return (ft_env(*env));
+		return (ft_env(cmd, *env));
 	if (ft_strncmp(name, "exit", 5) == 0)
 		return (ft_exit(cmd));
 	return (0);
