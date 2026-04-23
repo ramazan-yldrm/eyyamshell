@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 14:23:34 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 16:10:36 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 21:12:15 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	execute_external(t_cmd *cmd, t_env **env)
 		perror_and_sstatus(path, NULL, ERR_PERM, EXIT_PERM_DENIED);
 		child_clean_exit(EXIT_PERM_DENIED);
 	}
-	perror_and_sstatus(path, NULL, ERR_NO_FILE, EXIT_CMD_NOT_FOUND);
+	perror_and_sstatus(path, NULL, strerror(errno), EXIT_CMD_NOT_FOUND);
 	child_clean_exit(EXIT_CMD_NOT_FOUND);
 }
 
