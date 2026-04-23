@@ -19,7 +19,7 @@ void	*gc_malloc(size_t size, t_gc_type type)
 	ptr = malloc(size);
 	if (!ptr)
 	{
-		ft_putendl_fd("minishell: fatal: malloc failed", STDERR_FILENO);
+		perror_and_sstatus("fatal", NULL, ERR_MALLOC, EXIT_FAILURE);
 		cleanup_and_exit(1);
 	}
 	gc_add_node(ptr, type);

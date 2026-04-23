@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/23 15:46:44 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 17:20:42 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@
 # define ERR_FORK "fork failed"
 # define ERR_CMD "command not found"
 # define ERR_PERM "Permission denied"
-# define ERR_SYNTAX "syntax error near unexpected token"
+# define ERR_SYNTAX "syntax error near unexpected token"//kullanılmazsa silin
 # define ERR_NO_FILE "No such file or directory"
 # define ERR_IS_DIR "Is a directory"
-# define ERR_NOT_DIR "Not a directory"
+# define ERR_NOT_DIR "Not a directory"//kullanılmazsa silin
 # define ERR_HOME_NOT_SET "HOME not set"
 # define ERR_TOO_MANY_ARGS "too many arguments"
 # define ERR_NUM_REQ "numeric argument required"
