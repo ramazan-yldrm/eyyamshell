@@ -50,7 +50,7 @@ static int	handle_redir(t_cmd *cmd, t_token **token)
 		ft_putstr_fd(curr->next->value, 2);
 		ft_putstr_fd("'\n", 2);
 	}
-	g_exit_status = 2;
+	get_set_status(1, 2);
 	return (1);
 }
 
@@ -86,7 +86,7 @@ static int	check_syntax(t_token *token)
 	if (token->type == TOKEN_PIPE)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-		g_exit_status = 2;
+		get_set_status(1, 2);
 		return (0);
 	}
 	tmp = token;
@@ -95,7 +95,7 @@ static int	check_syntax(t_token *token)
 		if (tmp->type == TOKEN_PIPE && (!tmp->next || tmp->next->type == TOKEN_PIPE))
 		{
 			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-			g_exit_status = 2;
+			get_set_status(1, 2);
 			return (0);
 		}
 		tmp = tmp->next;

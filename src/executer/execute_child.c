@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 14:23:34 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:23:39 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:10:36 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	execute_external(t_cmd *cmd, t_env **env)
 	if (!path)
 	{
 		if (ft_strchr(cmd->value[0], '/'))
-			perror_and_sstatus(cmd->value[0], NULL, "No such file or directory", 127);
+			perror_and_sstatus(cmd->value[0], NULL, ERR_NO_FILE, 127);
 		else
-			perror_and_sstatus(cmd->value[0], NULL, "command not found", 127);
+			perror_and_sstatus(cmd->value[0], NULL, ERR_CMD, 127);
 		child_clean_exit(127);
 	}
 	validate_path(path);

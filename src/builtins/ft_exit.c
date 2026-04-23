@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:48:21 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 23:42:30 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:08:51 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_exit(t_cmd *cmd)
 	if (isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", 2);
 	if (!cmd->value[1])
-		cleanup_and_exit(g_exit_status);
+		cleanup_and_exit(get_set_status(0, 0));
 	if (!is_numeric_str(cmd->value[1]))
 		handle_numeric_error(cmd->value[1]);
 	status = atoll_with_ovf(cmd->value[1], &ovf);

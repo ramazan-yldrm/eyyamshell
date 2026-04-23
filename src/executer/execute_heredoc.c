@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 22:02:05 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 19:53:23 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:24:49 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	heredoc_wait(pid_t pid, int *fd)
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
 		close(fd[0]);
-		g_exit_status = 130;
+		get_set_status(1, 130);
 		return (-1);
 	}
 	return (fd[0]);

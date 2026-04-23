@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 20:54:20 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 00:40:00 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:45:38 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	sigint_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_exit_status = 130;
+		get_set_status(1, 130);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

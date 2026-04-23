@@ -46,7 +46,8 @@ UTILS		= src/utils/env/env_add_back.c \
 			  src/utils/gc/gc_wrappers.c \
 			  src/utils/gc/get_collector.c \
 			  src/utils/signals/signals.c \
-			  src/utils/cleanup_and_exit.c
+			  src/utils/cleanup_and_exit.c \
+			  src/utils/get_set_status.c
 
 SRCS		=	$(CORE) $(LEXER) $(EXPANDER) $(PARSER) $(EXECUTER) $(BUILTINS) $(UTILS)
 

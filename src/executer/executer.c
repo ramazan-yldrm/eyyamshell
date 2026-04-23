@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 19:59:05 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 19:17:15 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:10:59 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ static void	execute_oneline(t_cmd *cmd, t_env **env)
 
 	if (save_std_fds(save_std) == -1)
 	{
-		g_exit_status = 1;
+		get_set_status(1, 1);
 		return ;
 	}
 	if (execute_redirs(cmd) == 0)
-		g_exit_status = execute_builtin(cmd, env);
+		get_set_status(1, execute_builtin(cmd, env));
 	else
-		g_exit_status = 1;
+		get_set_status(1, 1);
 	restore_std(save_std);
 }
 

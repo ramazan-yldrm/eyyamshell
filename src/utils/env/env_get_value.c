@@ -19,7 +19,7 @@ char	*env_get_value(char *key, t_env *env_list)
 	if (!key || !env_list)
 		return (NULL);
 	if (ft_strncmp(key, "?", 2) == 0)
-		return (gc_itoa(g_exit_status, GC_TEMP));
+		return (gc_itoa(get_set_status(0, 0), GC_TEMP));
 	key_len = ft_strlen(key);
 	while (env_list)
 	{

@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/22 23:26:12 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:46:44 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
 
 /* ---------- signals ------------- */
 
-extern int	g_exit_status;
+extern int	g_signal;
 
 void	setup_signals(void);
 void	setup_child_signals(void);
@@ -213,6 +213,7 @@ int		is_numeric_str(char *str);
 
 /* ------------ utils --------------- */
 
+int		get_set_status(int mode, int new_status);
 void	cleanup_and_exit(int exit_code);
 
 /* -----------------------------------*/

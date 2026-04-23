@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	g_exit_status = 0;
+int g_signal = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 				executer(cmd, &env_list);
 		}
 		gc_free_type(GC_TEMP);
-		return (g_exit_status);
+		return (get_set_status(0, 0));
 	}
 
 	// 🔁 INTERACTIVE MOD
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 		{
 			printf("exit\n");
-			cleanup_and_exit(g_exit_status);
+			cleanup_and_exit(get_set_status(0, 0));
 		}
 		gc_add_node(input, GC_TEMP);
 		if (*input)
@@ -56,5 +56,5 @@ int	main(int argc, char **argv, char **envp)
 		}
 		gc_free_type(GC_TEMP);
 	}
-	return (0);
+	return (get_set_status(0, 0));
 }

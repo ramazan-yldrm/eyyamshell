@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 17:26:58 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:46:10 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code)
 	ft_strlcat(buf, msg, 1024);
 	ft_strlcat(buf, "\n", 1024);
 	write(STDERR_FILENO, buf, ft_strlen(buf));
-	g_exit_status = exit_code;
+	get_set_status(1, exit_code);
 }

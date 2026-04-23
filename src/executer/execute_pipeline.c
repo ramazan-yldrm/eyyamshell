@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 22:01:40 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:19:45 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/23 15:21:52 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 static void	save_last_status(int status, int *last_sig)
 {
 	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+		get_set_status(1, WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 	{
-		g_exit_status = 128 + WTERMSIG(status);
+		get_set_status(1, 128 + WTERMSIG(status));
 		*last_sig = WTERMSIG(status);
 	}
 }
@@ -72,7 +72,10 @@ static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last)
 	if (pid == -1)
 	{
 		if (cmd->next)
-			(close(fd[0]), close(fd[1]));
+		{
+			close(fd[0]);
+			close(fd[1]);
+		}
 		if (*prev_fd != -1)
 			close(*prev_fd);
 		perror_and_sstatus("fork", NULL, ERR_FORK, EXIT_FAILURE);
@@ -84,7 +87,8 @@ static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last)
 		execute_child(cmd, env, *prev_fd, fd);
 	}
 	*last = pid;
-	return (update_prev_fd(cmd, fd, prev_fd), 0);
+	update_prev_fd(cmd, fd, prev_fd);
+	return (0);
 }
 
 void	execute_pipeline(t_cmd *cmd, t_env **env)
