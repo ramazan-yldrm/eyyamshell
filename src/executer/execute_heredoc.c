@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/21 22:02:05 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 15:24:49 by ryildiri         ###   ########.fr       */
+/*   Created: 2026/04/23 20:44:35 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/23 20:44:56 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	heredoc_child_loop(int write_fd, char *delimiter)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			printf("minishell: warning: here-document delimited by end-of-file "
+				"(wanted `%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
@@ -82,17 +83,20 @@ int	execute_heredoc(char *delimiter)
 	return (heredoc_wait(pid, fd));
 }
 
-static void	close_prev_heredocs(t_cmd *cmd_head, t_redir *stop)
+static int	fail_heredoc(t_cmd *head, t_redir *stop)
 {
 	t_redir	*redir;
 
-	while (cmd_head)
+	while (head)
 	{
-		redir = cmd_head->redirs;
+		redir = head->redirs;
 		while (redir)
 		{
 			if (redir == stop)
-				return ;
+			{
+				setup_signals();
+				return (EXIT_FAILURE);
+			}
 			if (redir->type == REDIR_HEREDOC && redir->heredoc_fd > 0)
 			{
 				close(redir->heredoc_fd);
@@ -100,8 +104,10 @@ static void	close_prev_heredocs(t_cmd *cmd_head, t_redir *stop)
 			}
 			redir = redir->next;
 		}
-		cmd_head = cmd_head->next;
+		head = head->next;
 	}
+	setup_signals();
+	return (EXIT_FAILURE);
 }
 
 int	prepare_heredoc(t_cmd *cmd)
@@ -120,11 +126,7 @@ int	prepare_heredoc(t_cmd *cmd)
 			{
 				redir->heredoc_fd = execute_heredoc(redir->file);
 				if (redir->heredoc_fd == -1)
-				{
-					close_prev_heredocs(head, redir);
-					setup_signals();
-					return (EXIT_FAILURE);
-				}
+					return (fail_heredoc(head, redir));
 			}
 			redir = redir->next;
 		}

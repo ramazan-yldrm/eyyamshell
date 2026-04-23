@@ -5,24 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/21 22:01:40 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 15:21:52 by ryildiri         ###   ########.fr       */
+/*   Created: 2026/04/23 20:41:49 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/23 20:41:59 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
-
-static void	save_last_status(int status, int *last_sig)
-{
-	if (WIFEXITED(status))
-		get_set_status(1, WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-	{
-		get_set_status(1, 128 + WTERMSIG(status));
-		*last_sig = WTERMSIG(status);
-	}
-}
 
 static void	wait_children(pid_t last_pid)
 {
@@ -37,7 +26,15 @@ static void	wait_children(pid_t last_pid)
 		if (pid <= 0)
 			break ;
 		if (pid == last_pid)
-			save_last_status(status, &last_sig);
+		{
+			if (WIFEXITED(status))
+				get_set_status(1, WEXITSTATUS(status));
+			else if (WIFSIGNALED(status))
+			{
+				last_sig = WTERMSIG(status);
+				get_set_status(1, 128 + last_sig);
+			}
+		}
 	}
 	if (last_sig == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
@@ -58,6 +55,19 @@ static void	update_prev_fd(t_cmd *cmd, int *fd, int *prev_fd)
 		*prev_fd = -1;
 }
 
+static int	handle_fork_error(t_cmd *cmd, int *fd, int prev_fd)
+{
+	if (cmd->next)
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
+	if (prev_fd != -1)
+		close(prev_fd);
+	perror_and_sstatus("fork", NULL, ERR_FORK, EXIT_FAILURE);
+	return (-1);
+}
+
 static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last)
 {
 	int		fd[2];
@@ -70,17 +80,7 @@ static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last)
 	}
 	pid = fork();
 	if (pid == -1)
-	{
-		if (cmd->next)
-		{
-			close(fd[0]);
-			close(fd[1]);
-		}
-		if (*prev_fd != -1)
-			close(*prev_fd);
-		perror_and_sstatus("fork", NULL, ERR_FORK, EXIT_FAILURE);
-		return (-1);
-	}
+		return (handle_fork_error(cmd, fd, *prev_fd));
 	if (pid == 0)
 	{
 		setup_child_signals();
