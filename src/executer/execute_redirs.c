@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 22:02:12 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 14:20:06 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/24 02:54:01 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	open_redir_fd(t_redir *redir)
 		return (open(redir->file, O_RDONLY));
 	if (redir->type == REDIR_OUT)
 		return (open(redir->file,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644));
+				O_WRONLY | O_CREAT | O_TRUNC, 0664));
 	return (open(redir->file,
-			O_WRONLY | O_CREAT | O_APPEND, 0644));
+			O_WRONLY | O_CREAT | O_APPEND, 0664));
 }
 
 static void	apply_redir(t_redir *redir, int fd)
