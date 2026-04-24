@@ -129,7 +129,7 @@ minishell$ echo $?
 minishell/
 ├── Makefile
 ├── README.md
-├── includes/
+├── inc/
 │   └── minishell.h         # Main header — structs, enums, prototypes
 ├── src/
 │   ├── core/               # Entry point, main loop
