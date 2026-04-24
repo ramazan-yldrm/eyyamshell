@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/24 07:02:53 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/24 20:22:32 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,9 @@ static void	env_update_pwd(t_env **env, char *old_pwd)
 	char	new_pwd[PATH_MAX];
 
 	if (old_pwd[0])
-		env_set_value(env, "OLDPWD",
-			gc_strdup(old_pwd, GC_PERM));
+		env_set_value(env, "OLDPWD", gc_strdup(old_pwd, GC_PERM));
 	if (getcwd(new_pwd, sizeof(new_pwd)))
-		env_set_value(env, "PWD",
-			gc_strdup(new_pwd, GC_PERM));
+		env_set_value(env, "PWD", gc_strdup(new_pwd, GC_PERM));
 }
 
 int	ft_cd(t_cmd *cmd, t_env **env)
