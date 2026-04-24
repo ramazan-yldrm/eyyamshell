@@ -132,14 +132,14 @@ minishell/
 ├── includes/
 │   └── minishell.h         # Main header — structs, enums, prototypes
 ├── src/
-│   ├── main.c              # Entry point, main loop
+│   ├── core/               # Entry point, main loop
 │   ├── lexer/              # Tokenization of raw input
+│   ├── expander/			# $VAR and $? expansion
 │   ├── parser/             # AST or command list construction
 │   ├── executor/           # Fork, exec, pipe, redirection logic
 │   ├── builtins/           # echo, cd, pwd, export, unset, env, exit
-│   ├── expander/           # $VAR and $? expansion
-│   └── signals/            # Signal handling (SIGINT, SIGQUIT, etc.)
-└── libft/                  # Your standard C library (if included as submodule)
+│   └── utils/              # Utility programs like Envarionmet, Signal, and garbage collection.
+└── lib/                    # Your standard C library (if included as submodule)
 ```
 
 ---
