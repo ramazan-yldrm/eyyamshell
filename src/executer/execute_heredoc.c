@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 20:44:35 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 20:44:56 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/24 11:52:05 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	heredoc_wait(pid_t pid, int *fd)
 	return (fd[0]);
 }
 
-int	execute_heredoc(char *delimiter)
+static int	execute_heredoc(char *delimiter)
 {
 	int		fd[2];
 	pid_t	pid;

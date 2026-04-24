@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 15:55:11 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/24 07:02:53 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*resolve_cd_path(t_cmd *cmd, t_env *env)
 	return (path);
 }
 
-static void	update_pwd_env(t_env **env, char *old_pwd)
+static void	env_update_pwd(t_env **env, char *old_pwd)
 {
 	char	new_pwd[PATH_MAX];
 
@@ -60,6 +60,6 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		perror_and_sstatus("cd", path, strerror(errno), EXIT_FAILURE);
 		return (EXIT_FAILURE);
 	}
-	update_pwd_env(env, old_pwd);
+	env_update_pwd(env, old_pwd);
 	return (EXIT_SUCCESS);
 }
