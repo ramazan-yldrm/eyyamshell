@@ -13,9 +13,9 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, int start, int len)
 {
-	size_t	s_len;
+	int		s_len;
 	char	*buf;
 
 	if (!s)

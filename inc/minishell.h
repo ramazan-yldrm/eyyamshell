@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/23 21:26:29 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/24 19:26:18 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	gc_free_all(void);
 
 char	*gc_strdup(const char *s1, t_gc_type type);
 char	*gc_strjoin(char const *s1, char const *s2, t_gc_type type);
-char	*gc_substr(char const *s, unsigned int start, size_t len, t_gc_type type);
+char	*gc_substr(char const *s, int start, int len, t_gc_type type);
 char	**gc_split(char const *s, char c, t_gc_type type);
 char	*gc_itoa(int n, t_gc_type type);
 
@@ -161,11 +161,10 @@ typedef enum e_redir_type
 typedef struct s_redir
 {
 	char			*file;
-	int             heredoc_fd;
+	int				heredoc_fd;
 	t_redir_type	type;
 	struct s_redir	*next;
 }					t_redir;
-
 
 typedef struct s_cmd
 {
