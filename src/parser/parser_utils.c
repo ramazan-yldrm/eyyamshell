@@ -35,6 +35,7 @@ t_redir	*redir_new_node(t_redir_type type, char *file)
 		return (NULL);
 	new_redir->type = type;
 	new_redir->file = gc_strdup(file, GC_TEMP);
+	new_redir->heredoc_fd = -1;
 	new_redir->next = NULL;
 	return (new_redir);
 }
