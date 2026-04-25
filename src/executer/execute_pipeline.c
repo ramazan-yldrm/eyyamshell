@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 20:41:49 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/26 00:10:37 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 00:13:00 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	handle_fork_error(t_cmd *cmd, int *pipe_fd, int prev_fd)
 	return (-1);
 }
 
-static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last_pid)
+static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *la_pid)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -86,7 +86,7 @@ static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last_pid)
 		setup_child_signals();
 		execute_child(cmd, env, *prev_fd, pipe_fd);
 	}
-	*last_pid = pid;
+	*la_pid = pid;
 	update_prev_fd(cmd, pipe_fd, prev_fd);
 	return (0);
 }
