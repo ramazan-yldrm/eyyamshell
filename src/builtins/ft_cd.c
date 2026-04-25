@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/24 20:22:32 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:52:21 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ static char	*resolve_cd_path(t_cmd *cmd, t_env *env)
 	char	*path;
 
 	path = cmd->value[1];
-	if (path && path[0] == '\0')
-		path = NULL;
 	if (!path)
 	{
 		path = env_get_value("HOME", env);
 		if (!path)
 			perror_and_sstatus("cd", NULL, ERR_HOME_NOT_SET, EXIT_FAILURE);
+	}
+	if (ft_strncmp(path, "-", 2) == 0)
+	{
+		path = env_get_value("OLDPWD", env);
+		if (!path)
+			perror_and_sstatus("cd", NULL, "OLDPWD not set", EXIT_FAILURE);
+		else
+			printf("%s\n", path);
 	}
 	return (path);
 }
@@ -43,6 +49,10 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 	char	*path;
 	char	old_pwd[PATH_MAX];
 
+	if (!cmd || !cmd->value)
+		return (EXIT_FAILURE);
+	if (cmd->value[1] && cmd->value[1][0] == '\0')
+		return (EXIT_SUCCESS);
 	if (cmd->value[1] && cmd->value[2])
 	{
 		perror_and_sstatus("cd", NULL, ERR_TOO_MANY_ARGS, EXIT_FAILURE);

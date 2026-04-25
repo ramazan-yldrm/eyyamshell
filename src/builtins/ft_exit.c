@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:48:21 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 16:08:51 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:53:01 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ static long long	atoll_with_ovf(const char *str, int *ovf)
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
-		if (str[i++] == '-')
+	{
+		if (str[i] == '-')
 			sign = -1;
+		i++;
+	}
 	while (ft_isdigit(str[i]))
 	{
 		res = res * 10 + (str[i++] - '0');
@@ -52,7 +55,7 @@ int	ft_exit(t_cmd *cmd)
 	ovf = 0;
 	if (isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", 2);
-	if (!cmd->value[1])
+	if (!cmd || !cmd->value[1])
 		cleanup_and_exit(get_set_status(0, 0));
 	if (!is_numeric_str(cmd->value[1]))
 		handle_numeric_error(cmd->value[1]);

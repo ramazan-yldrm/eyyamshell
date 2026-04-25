@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:52:06 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 23:41:21 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:54:02 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_unset(t_cmd *cmd, t_env **env)
 		return (EXIT_SUCCESS);
 	while (cmd->value[++i])
 	{
-		if (!is_valid_id(cmd->value[i]) || ft_strchr(cmd->value[i], '='))
+		if (!is_valid(cmd->value[i]) || ft_strchr(cmd->value[i], '='))
 		{
 			perror_and_sstatus("unset", cmd->value[i], ERR_IDENTIFIER, 1);
 			ret = EXIT_FAILURE;

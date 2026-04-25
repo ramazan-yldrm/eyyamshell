@@ -14,10 +14,12 @@
 
 int	ft_env(t_cmd *cmd, t_env *env)
 {
+	if (!cmd || !cmd->value)
+		return (EXIT_FAILURE);
 	if (cmd->value[1])
 	{
 		perror_and_sstatus("env", cmd->value[1], ERR_NO_FILE, 127);
-		return (127);
+		return (EXIT_CMD_NOT_FOUND);
 	}
 	while (env)
 	{
@@ -29,5 +31,5 @@ int	ft_env(t_cmd *cmd, t_env *env)
 		}
 		env = env->next;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

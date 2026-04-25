@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 10:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 10:00:00 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:52:36 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	ft_echo(t_cmd *cmd)
 	int	i;
 	int	n_flag;
 
+	if (!cmd || !cmd->value)
+		return (EXIT_FAILURE);
 	i = 1;
 	n_flag = 0;
 	while (cmd->value[i] && is_n_flag(cmd->value[i]))
@@ -47,5 +49,5 @@ int	ft_echo(t_cmd *cmd)
 	}
 	if (!n_flag)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (0);
+	return (EXIT_SUCCESS);
 }

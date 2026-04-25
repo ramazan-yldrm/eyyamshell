@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/24 20:23:18 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:54:35 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,11 +201,11 @@ int		ft_export(t_cmd *cmd, t_env **env);
 int		ft_unset(t_cmd *cmd, t_env **env);
 int		ft_exit(t_cmd *cmd);
 int		ft_pwd(t_env *env);
-int		get_env_size(t_env *env);
-void	sort_env_array(t_env **arr, int size);
-void	print_export_arr(t_env **arr, int size);
+int		env_get__size(t_env *env);
+void	env_list_sort(t_env **env, int size);
+void	print_export_env(t_env **env, int size);
 int		print_sorted_export(t_env *env);
-int		is_valid_id(char *str);
+int		is_valid(char *str);
 int		is_numeric_str(char *str);
 
 /* ------------ utils --------------- */

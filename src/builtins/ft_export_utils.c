@@ -6,13 +6,13 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 23:32:10 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 23:32:12 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:53:27 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_env_size(t_env *env)
+int	env_get_size(t_env *env)
 {
 	int	size;
 
@@ -25,7 +25,7 @@ int	get_env_size(t_env *env)
 	return (size);
 }
 
-void	sort_env_array(t_env **arr, int size)
+void	env_list_sort(t_env **env, int size)
 {
 	int		i;
 	int		j;
@@ -38,28 +38,28 @@ void	sort_env_array(t_env **arr, int size)
 		j = -1;
 		while (++j < size - i - 1)
 		{
-			len = ft_strlen(arr[j]->key) + 1;
-			if (ft_strncmp(arr[j]->key, arr[j + 1]->key, len) > 0)
+			len = ft_strlen(env[j]->key) + 1;
+			if (ft_strncmp(env[j]->key, env[j + 1]->key, len) > 0)
 			{
-				tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
+				tmp = env[j];
+				env[j] = env[j + 1];
+				env[j + 1] = tmp;
 			}
 		}
 	}
 }
 
-void	print_export_arr(t_env **arr, int size)
+void	print_export_env(t_env **env, int size)
 {
 	int	i;
 
 	i = 0;
 	while (i < size)
 	{
-		if (arr[i]->value)
-			printf("declare -x %s=\"%s\"\n", arr[i]->key, arr[i]->value);
+		if (env[i]->value)
+			printf("declare -x %s=\"%s\"\n", env[i]->key, env[i]->value);
 		else
-			printf("declare -x %s\n", arr[i]->key);
+			printf("declare -x %s\n", env[i]->key);
 		i++;
 	}
 }
@@ -70,7 +70,7 @@ int	print_sorted_export(t_env *env)
 	int		size;
 	int		i;
 
-	size = get_env_size(env);
+	size = env_get_size(env);
 	if (size == 0)
 		return (EXIT_SUCCESS);
 	arr = (t_env **)malloc(sizeof(t_env *) * size);
@@ -82,8 +82,8 @@ int	print_sorted_export(t_env *env)
 		arr[i++] = env;
 		env = env->next;
 	}
-	sort_env_array(arr, size);
-	print_export_arr(arr, size);
+	env_list_sort(arr, size);
+	print_export_env(arr, size);
 	free(arr);
 	return (EXIT_SUCCESS);
 }

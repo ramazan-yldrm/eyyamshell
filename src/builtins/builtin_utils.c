@@ -6,13 +6,13 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:47:22 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/22 13:47:24 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 02:52:09 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_valid_id(char *str)
+int	is_valid(char *str)
 {
 	int	i;
 
