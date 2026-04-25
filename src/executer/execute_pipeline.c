@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 20:41:49 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/26 00:06:59 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 00:10:37 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ static void	update_prev_fd(t_cmd *cmd, int *fd, int *prev_fd)
 		*prev_fd = -1;
 }
 
-static int	handle_fork_error(t_cmd *cmd, int *fd, int prev_fd)
+static int	handle_fork_error(t_cmd *cmd, int *pipe_fd, int prev_fd)
 {
 	if (cmd->next)
 	{
-		close(fd[0]);
-		close(fd[1]);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
 	}
 	if (prev_fd != -1)
 		close(prev_fd);
@@ -70,24 +70,24 @@ static int	handle_fork_error(t_cmd *cmd, int *fd, int prev_fd)
 
 static int	pipeline_step(t_cmd *cmd, t_env **env, int *prev_fd, pid_t *last_pid)
 {
-	int		fd[2];
+	int		pipe_fd[2];
 	pid_t	pid;
 
-	if (cmd->next && pipe(fd) == -1)
+	if (cmd->next && pipe(pipe_fd) == -1)
 	{
 		perror_and_sstatus("pipe", NULL, ERR_PIPE, EXIT_FAILURE);
 		return (-1);
 	}
 	pid = fork();
 	if (pid == -1)
-		return (handle_fork_error(cmd, fd, *prev_fd));
+		return (handle_fork_error(cmd, pipe_fd, *prev_fd));
 	if (pid == 0)
 	{
 		setup_child_signals();
-		execute_child(cmd, env, *prev_fd, fd);
+		execute_child(cmd, env, *prev_fd, pipe_fd);
 	}
 	*last_pid = pid;
-	update_prev_fd(cmd, fd, prev_fd);
+	update_prev_fd(cmd, pipe_fd, prev_fd);
 	return (0);
 }
 
