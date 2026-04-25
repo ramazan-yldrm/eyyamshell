@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-static void	update_shlvl(t_env **env_list)
+static void	update_shlvl(t_env **env)
 {
 	char	*current_val;
 	int		lvl;
 	char	*new_val;
 
-	current_val = env_get_value("SHLVL", *env_list);
+	current_val = env_get_value("SHLVL", *env);
 	if (!current_val)
 		lvl = 1;
 	else
@@ -28,24 +28,26 @@ static void	update_shlvl(t_env **env_list)
 			lvl = 0;
 	}
 	new_val = gc_itoa(lvl, GC_PERM);
-	env_set_value(env_list, "SHLVL", new_val);
+	env_set_value(env, "SHLVL", new_val);
 }
 
-void	env_check_missing(t_env **env_list)
+void	env_check_missing(t_env **env)
 {
 	char	cwd[PATH_MAX];
-
-	if (!env_get_value("PWD", *env_list))
+	
+	if (!env || !*env)
+		return ;
+	if (!env_get_value("PWD", *env))
 	{
 		if (getcwd(cwd, PATH_MAX))
-			env_set_value(env_list, "PWD", gc_strdup(cwd, GC_PERM));
+			env_set_value(env, "PWD", gc_strdup(cwd, GC_PERM));
 	}
-	update_shlvl(env_list);
-	if (!env_get_value("PATH", *env_list))
+	update_shlvl(env);
+	if (!env_get_value("PATH", *env))
 	{
-		env_set_value(env_list, "PATH",
+		env_set_value(env, "PATH",
 			gc_strdup("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", GC_PERM));
 	}
-	if (!env_get_value("_", *env_list))
-		env_set_value(env_list, "_", gc_strdup("./minishell", GC_PERM));
+	if (!env_get_value("_", *env))
+		env_set_value(env, "_", gc_strdup("./minishell", GC_PERM));
 }

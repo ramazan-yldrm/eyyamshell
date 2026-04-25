@@ -1,75 +1,58 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/25 02:57:17 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/25 02:57:17 by ryildiri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
-
-int	g_signal = 0;
-
-static void	process_input(char *input, t_env **env)
-{
-	t_token	*tokens;
-	t_cmd	*cmd;
-
-	tokens = lexer(input);
-	if (!tokens)
-		return ;
-	expander(tokens, *env);
-	remove_empty_tokens(&tokens);
-	remove_quotes(tokens);
-	cmd = parser(tokens);
-	if (cmd)
-		executer(cmd, env);
-}
-
-static void	handle_signal(void)
-{
-	if (g_signal == SIGINT)
-	{
-		get_set_status(1, 130);
-		g_signal = 0;
-	}
-}
-
-static void	interactive_loop(t_env **env)
-{
-	char	*input;
-
-	while (1)
-	{
-		setup_signals();
-		input = readline("minishell$ ");
-		if (!input)
-			cleanup_and_exit(get_set_status(0, 0));
-		handle_signal();
-		gc_add_node(input, GC_TEMP);
-		if (*input)
-		{
-			add_history(input);
-			process_input(input, env);
-		}
-		gc_free_type(GC_TEMP);
-	}
-}
+#include "libft.h"
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	*input;
+	t_token	*token;
+	t_cmd	*cmd;
 	t_env	*env_list;
 
-	(void)argc;
-	(void)argv;
-	env_list = NULL;
 	setup_signals();
 	env_list = env_init(envp);
 	env_check_missing(&env_list);
-	interactive_loop(&env_list);
-	return (get_set_status(0, 0));
+
+	// 🔥 BURASI: -c desteği
+	if (argc == 3 && strcmp(argv[1], "-c") == 0)
+	{
+		input = argv[2];
+		token = lexer(input);
+		if (token)
+		{
+			expander(token, env_list);
+			remove_empty_tokens(&token);
+			remove_quotes(token);
+			cmd = parser(token);
+			if (cmd)
+				executer(cmd, &env_list);
+		}
+		gc_free_type(GC_TEMP);
+		return (get_set_status(0, 0));
+	}
+
+	// 🔁 INTERACTIVE MOD
+	while (1)
+	{
+		input = readline("minishell$ ");
+		if (!input)
+		{
+			printf("exit\n");
+			cleanup_and_exit(get_set_status(0, 0));
+		}
+		gc_add_node(input, GC_TEMP);
+		if (*input)
+			add_history(input);
+		token = lexer(input);
+		if (token)
+		{
+			expander(token, env_list);
+			remove_empty_tokens(&token);
+			remove_quotes(token);
+			cmd = parser(token);
+			if (cmd)
+				executer(cmd, &env_list);
+		}
+		gc_free_type(GC_TEMP);
+	}
+	return (0);
 }

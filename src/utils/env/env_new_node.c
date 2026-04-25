@@ -16,6 +16,8 @@ t_env	*env_new_node(char *key, char *value)
 {
 	t_env	*new;
 
+	if (!key || !value || !*key || !*value)
+		return (NULL);
 	new = NULL;
 	new = gc_malloc(sizeof(t_env), GC_PERM);
 	new->key = key;

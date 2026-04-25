@@ -16,6 +16,8 @@ void	env_set_value(t_env **env_list, char *key, char *value)
 {
 	t_env	*tmp;
 
+	if (!env_list || !*env_list || !value || !*value || !key || !*key)
+		return ;
 	tmp = *env_list;
 	while (tmp)
 	{

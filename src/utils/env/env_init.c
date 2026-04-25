@@ -12,26 +12,28 @@
 
 #include "minishell.h"
 
-t_env	*env_init(char **env)
+t_env	*env_init(char **env_arr)
 {
-	t_env	*env_list;
+	t_env	*env;
 	char	*eq_pos;
 	char	*key;
 	char	*value;
 	int		i;
 
-	env_list = NULL;
+	if (!env_arr || !*env_arr)
+		return (NULL);
+	env = NULL;
 	i = 0;
-	while (env[i])
+	while (env_arr[i])
 	{
-		eq_pos = ft_strchr(env[i], '=');
+		eq_pos = ft_strchr(env_arr[i], '=');
 		if (eq_pos)
 		{
-			key = gc_substr(env[i], 0, eq_pos - env[i], GC_PERM);
+			key = gc_substr(env_arr[i], 0, eq_pos - env_arr	[i], GC_PERM);
 			value = gc_strdup(eq_pos + 1, GC_PERM);
-			env_add_back(&env_list, env_new_node(key, value));
+			env_add_back(&env, env_new_node(key, value));
 		}
 		i++;
 	}
-	return (env_list);
+	return (env);
 }

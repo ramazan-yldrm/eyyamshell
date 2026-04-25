@@ -32,6 +32,8 @@ char	**env_to_array(t_env *env_list)
 	char	**env_arr;
 	int		i;
 
+	if (!env_list)
+		return (NULL);
 	i = env_list_size(env_list);
 	env_arr = gc_malloc(sizeof(char *) * (i + 1), GC_TEMP);
 	tmp = env_list;

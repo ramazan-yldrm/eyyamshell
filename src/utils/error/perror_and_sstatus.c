@@ -6,18 +6,18 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 09:00:00 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/23 17:15:01 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 10:23:20 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
-#include <errno.h>
 
 void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code)
 {
 	char	buf[1024];
 
+	if (!msg || !*msg)
+		return ;
 	ft_strlcpy(buf, "minishell: ", 1024);
 	if (cmd)
 	{

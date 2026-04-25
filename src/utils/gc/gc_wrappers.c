@@ -16,6 +16,8 @@ char	*gc_strdup(const char *s1, t_gc_type type)
 {
 	char	*res;
 
+	if (!s1 || !*s1)
+		return (NULL);
 	res = ft_strdup(s1);
 	if (res)
 		gc_add_node(res, type);
@@ -26,6 +28,8 @@ char	*gc_strjoin(char const *s1, char const *s2, t_gc_type type)
 {
 	char	*res;
 
+	if (!s1 || !*s1 || !s2 || !*s2)
+		return (NULL);
 	res = ft_strjoin(s1, s2);
 	if (res)
 		gc_add_node(res, type);
@@ -36,6 +40,8 @@ char	*gc_substr(char const *s, int start, int len, t_gc_type type)
 {
 	char	*res;
 
+	if (!s || !*s)
+		return (NULL);
 	res = ft_substr(s, start, len);
 	if (res)
 		gc_add_node(res, type);
@@ -47,6 +53,8 @@ char	**gc_split(char const *s, char c, t_gc_type type)
 	char	**res;
 	int		i;
 
+	if (!s || !*s)
+		return (NULL);
 	res = ft_split(s, c);
 	if (res)
 	{

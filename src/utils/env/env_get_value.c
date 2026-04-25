@@ -12,24 +12,24 @@
 
 #include "minishell.h"
 
-char	*env_get_value(char *key, t_env *env_list)
+char	*env_get_value(char *key, t_env *env)
 {
 	size_t	key_len;
 
-	if (!key || !env_list)
+	if (!key || !*key || !env)
 		return (NULL);
 	if (ft_strncmp(key, "?", 2) == 0)
 		return (gc_itoa(get_set_status(0, 0), GC_TEMP));
 	key_len = ft_strlen(key);
-	while (env_list)
+	while (env)
 	{
-		if (ft_strncmp(env_list->key, key, key_len + 1) == 0)
+		if (ft_strncmp(env->key, key, key_len + 1) == 0)
 		{
-			if (env_list->value)
-				return (gc_strdup(env_list->value, GC_TEMP));
+			if (env->value)
+				return (gc_strdup(env->value, GC_TEMP));
 			return (NULL);
 		}
-		env_list = env_list->next;
+		env = env->next;
 	}
 	return (NULL);
 }
