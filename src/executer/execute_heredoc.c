@@ -6,11 +6,55 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 20:44:35 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/24 11:52:05 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/25 21:59:44 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	heredoc_wait(pid_t pid, int *fd)
+{
+	int	status;
+
+	close(fd[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status) != 0))
+	{
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		close(fd[0]);
+		get_set_status(1, 130);
+		return (-1);
+	}
+	return (fd[0]);
+}
+
+static int	fail_heredoc(t_cmd *head, t_redir *stop)
+{
+	t_redir	*redir;
+
+	while (head)
+	{
+		redir = head->redirs;
+		while (redir)
+		{
+			if (redir == stop)
+			{
+				setup_signals();
+				return (EXIT_FAILURE);
+			}
+			if (redir->type == REDIR_HEREDOC && redir->heredoc_fd > 0)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		head = head->next;
+	}
+	setup_signals();
+	return (EXIT_FAILURE);
+}
 
 static void	heredoc_child_loop(int write_fd, char *delimiter)
 {
@@ -34,24 +78,6 @@ static void	heredoc_child_loop(int write_fd, char *delimiter)
 		write(write_fd, "\n", 1);
 		free(line);
 	}
-}
-
-static int	heredoc_wait(pid_t pid, int *fd)
-{
-	int	status;
-
-	close(fd[1]);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status)
-		|| (WIFEXITED(status) && WEXITSTATUS(status) != 0))
-	{
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
-		close(fd[0]);
-		get_set_status(1, 130);
-		return (-1);
-	}
-	return (fd[0]);
 }
 
 static int	execute_heredoc(char *delimiter)
@@ -81,33 +107,6 @@ static int	execute_heredoc(char *delimiter)
 		_exit(EXIT_SUCCESS);
 	}
 	return (heredoc_wait(pid, fd));
-}
-
-static int	fail_heredoc(t_cmd *head, t_redir *stop)
-{
-	t_redir	*redir;
-
-	while (head)
-	{
-		redir = head->redirs;
-		while (redir)
-		{
-			if (redir == stop)
-			{
-				setup_signals();
-				return (EXIT_FAILURE);
-			}
-			if (redir->type == REDIR_HEREDOC && redir->heredoc_fd > 0)
-			{
-				close(redir->heredoc_fd);
-				redir->heredoc_fd = -1;
-			}
-			redir = redir->next;
-		}
-		head = head->next;
-	}
-	setup_signals();
-	return (EXIT_FAILURE);
 }
 
 int	prepare_heredoc(t_cmd *cmd)
