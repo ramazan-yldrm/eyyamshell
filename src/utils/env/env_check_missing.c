@@ -34,7 +34,7 @@ static void	update_shlvl(t_env **env)
 void	env_check_missing(t_env **env)
 {
 	char	cwd[PATH_MAX];
-	
+
 	if (!env || !*env)
 		return ;
 	if (!env_get_value("PWD", *env))
