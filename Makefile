@@ -13,6 +13,7 @@ EXPANDER	= src/expander/expander.c \
 			  src/expander/quote_removal.c \
 			  src/expander/expander_utils.c
 PARSER		= src/parser/parser.c \
+			  src/parser/check_syntax.c \
 			  src/parser/parser_utils.c
 EXECUTER	= src/executer/execute_child.c \
 			  src/executer/execute_heredoc.c \

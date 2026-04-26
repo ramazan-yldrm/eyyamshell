@@ -38,7 +38,8 @@ static int	handle_redir(t_cmd *cmd, t_token **token)
 	curr = *token;
 	if (curr->next && curr->next->type == TOKEN_WORD)
 	{
-		redir_add_back(&(cmd->redirs), redir_new_node(get_redir_type(curr->type), curr->next->value));
+		redir_add_back(&(cmd->redirs),
+			redir_new_node(get_redir_type(curr->type), curr->next->value));
 		*token = curr->next;
 		return (0);
 	}
@@ -77,36 +78,9 @@ static void	add_argument(t_cmd *cmd, char *value)
 	cmd->value = new_value;
 }
 
-static int	check_syntax(t_token *token)
-{
-	t_token	*tmp;
-
-	if (!token)
-		return (1);
-	if (token->type == TOKEN_PIPE)
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-		get_set_status(1, 2);
-		return (0);
-	}
-	tmp = token;
-	while (tmp)
-	{
-		if (tmp->type == TOKEN_PIPE && (!tmp->next || tmp->next->type == TOKEN_PIPE))
-		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-			get_set_status(1, 2);
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
 t_cmd	*parser(t_token *token)
 {
 	t_cmd	*cmd;
-	t_cmd	*new_cmd;
 	t_cmd	*curr;
 	t_token	*tmp;
 
@@ -118,22 +92,13 @@ t_cmd	*parser(t_token *token)
 	while (tmp)
 	{
 		if (!curr || tmp->type == TOKEN_PIPE)
-		{
-			new_cmd = cmd_new_node();
-			cmd_add_back(&cmd, new_cmd);
-			curr = new_cmd;
-			if (tmp->type == TOKEN_PIPE)
-			{
-				tmp = tmp->next;
-				continue ;
-			}
-		}
-		if (is_redir(tmp->type))
+			init_cmd(&cmd, &curr, &tmp);
+		if (tmp && is_redir(tmp->type))
 		{
 			if (handle_redir(curr, &tmp) != 0)
 				return (NULL);
 		}
-		else if (tmp->type == TOKEN_WORD)
+		else if (tmp && tmp->type == TOKEN_WORD)
 			add_argument(curr, tmp->value);
 		if (tmp)
 			tmp = tmp->next;

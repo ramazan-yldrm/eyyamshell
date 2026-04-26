@@ -173,7 +173,9 @@ typedef struct s_cmd
 
 t_cmd	*parser(t_token *token);
 
+int		check_syntax(t_token *token);
 t_cmd	*cmd_new_node(void);
+void	init_cmd(t_cmd **cmd, t_cmd **curr, t_token **tmp);
 t_redir	*redir_new_node(t_redir_type type, char *file);
 void	cmd_add_back(t_cmd **cmd, t_cmd *new_cmd);
 void	redir_add_back(t_redir **redir, t_redir *new_redir);

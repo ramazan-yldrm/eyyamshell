@@ -23,35 +23,6 @@ t_token	*handle_pipe(char **curr)
 	return (token_new_node(value, TOKEN_PIPE));
 }
 
-/*t_token	*handle_quotes(char **curr)
-{
-	t_token			*token;
-	t_token_type	type;
-	char			*start;
-	int				i;
-	char			quote;
-
-	quote = **curr;
-	(*curr)++;
-	start = *curr;
-	i = 0;
-	while (start[i] && start[i] != quote)
-		i++;
-	if (start[i] == '\0')
-	{
-		ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2);
-		*curr += i;
-		return (NULL);
-	}
-	if (quote == '\'')
-		type = SINGLE_QUOTE;
-	else
-		type = DOUBLE_QUOTE;
-	token = token_new_node(ft_substr(start, 0, i), type);
-	*curr += i + 1;
-	return (token);
-}*/
-
 t_token	*handle_redirect(char **curr)
 {
 	char	*s;

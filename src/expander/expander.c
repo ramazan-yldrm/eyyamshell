@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+static void	handle_dollar_at(t_token *token, int *i, int in_dq, t_env *env)
+{
+	char	next;
+
+	next = token->value[*i + 1];
+	if (!in_dq && (next == '\'' || next == '\"'))
+	{
+		ft_memmove(&token->value[*i], &token->value[*i + 1],
+			ft_strlen(&token->value[*i + 1]) + 1);
+		return ;
+	}
+	if (next != '?' && !ft_isalnum(next) && next != '_')
+	{
+		(*i)++;
+		return ;
+	}
+	handle_expansion(token, i, env);
+}
+
 static void	expand_single_node(t_token *token, t_env *env)
 {
 	int	i;
@@ -23,7 +42,7 @@ static void	expand_single_node(t_token *token, t_env *env)
 	i = 0;
 	in_sq = 0;
 	in_dq = 0;
-	while (token->value && token->value[i])
+	while (token->value[i])
 	{
 		if (token->value[i] == '\'' && !in_dq)
 			in_sq = !in_sq;
@@ -31,35 +50,10 @@ static void	expand_single_node(t_token *token, t_env *env)
 			in_dq = !in_dq;
 		else if (token->value[i] == '$' && !in_sq)
 		{
-			if (!in_dq && (token->value[i + 1] == '\'' || token->value[i + 1] == '\"'))
-			{
-				ft_memmove(&token->value[i], &token->value[i + 1], ft_strlen(&token->value[i + 1]) + 1);
-				continue ;
-			}
-			if (token->value[i + 1] != '?' && !ft_isalnum(token->value[i + 1])
-				&& token->value[i + 1] != '_')
-			{
-				i++;
-				continue ;
-			}
-			handle_expansion(token, &i, env);
+			handle_dollar_at(token, &i, in_dq, env);
 			continue ;
 		}
 		i++;
-	}
-}
-
-void	expander(t_token *token, t_env *env)
-{
-	while (token)
-	{
-		if (token->prev && token->prev->type == TOKEN_HEREDOC)
-		{
-			token = token->next;
-			continue ;
-		}
-		expand_single_node(token, env);
-		token = token->next;
 	}
 }
 
@@ -84,5 +78,19 @@ void	remove_empty_tokens(t_token **tokens)
 				curr->next->prev = curr->prev;
 		}
 		curr = next;
+	}
+}
+
+void	expander(t_token *token, t_env *env)
+{
+	while (token)
+	{
+		if (token->prev && token->prev->type == TOKEN_HEREDOC)
+		{
+			token = token->next;
+			continue ;
+		}
+		expand_single_node(token, env);
+		token = token->next;
 	}
 }

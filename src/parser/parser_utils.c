@@ -74,3 +74,11 @@ void	redir_add_back(t_redir **redir, t_redir *new_redir)
 		tmp = tmp->next;
 	tmp->next = new_redir;
 }
+
+void	init_cmd(t_cmd **cmd, t_cmd **curr, t_token **tmp)
+{
+	*curr = cmd_new_node();
+	cmd_add_back(cmd, *curr);
+	if ((*tmp)->type == TOKEN_PIPE)
+		*tmp = (*tmp)->next;
+}
