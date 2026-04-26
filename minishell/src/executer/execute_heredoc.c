@@ -1,0 +1,136 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_heredoc.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/23 20:44:35 by ryildiri          #+#    #+#             */
+/*   Updated: 2026/04/25 21:59:44 by ryildiri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static int	heredoc_wait(pid_t pid, int *fd)
+{
+	int	status;
+
+	close(fd[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status) != 0))
+	{
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+		close(fd[0]);
+		get_set_status(1, 130);
+		return (-1);
+	}
+	return (fd[0]);
+}
+
+static int	fail_heredoc(t_cmd *head, t_redir *stop)
+{
+	t_redir	*redir;
+
+	while (head)
+	{
+		redir = head->redirs;
+		while (redir)
+		{
+			if (redir == stop)
+			{
+				setup_signals();
+				return (EXIT_FAILURE);
+			}
+			if (redir->type == REDIR_HEREDOC && redir->heredoc_fd > 0)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		head = head->next;
+	}
+	setup_signals();
+	return (EXIT_FAILURE);
+}
+
+static void	heredoc_child_loop(int write_fd, char *delimiter)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			printf("minishell: warning: here-document delimited by end-of-file "
+				"(wanted `%s')\n", delimiter);
+			break ;
+		}
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(write_fd, line, ft_strlen(line));
+		write(write_fd, "\n", 1);
+		free(line);
+	}
+}
+
+static int	execute_heredoc(char *delimiter)
+{
+	int		fd[2];
+	pid_t	pid;
+
+	if (pipe(fd) == -1)
+	{
+		perror_and_sstatus("heredoc", NULL, ERR_PIPE, EXIT_FAILURE);
+		return (-1);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		perror_and_sstatus("heredoc", NULL, ERR_FORK, EXIT_FAILURE);
+		close(fd[0]);
+		close(fd[1]);
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		setup_heredoc_signals();
+		close(fd[0]);
+		heredoc_child_loop(fd[1], delimiter);
+		close(fd[1]);
+		_exit(EXIT_SUCCESS);
+	}
+	return (heredoc_wait(pid, fd));
+}
+
+int	prepare_heredoc(t_cmd *cmd)
+{
+	t_cmd	*head;
+	t_redir	*redir;
+
+	head = cmd;
+	ignore_signals();
+	while (cmd)
+	{
+		redir = cmd->redirs;
+		while (redir)
+		{
+			if (redir->type == REDIR_HEREDOC)
+			{
+				redir->heredoc_fd = execute_heredoc(redir->file);
+				if (redir->heredoc_fd == -1)
+					return (fail_heredoc(head, redir));
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+	setup_signals();
+	return (EXIT_SUCCESS);
+}
