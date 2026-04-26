@@ -23,7 +23,7 @@ static void	wait_children(pid_t last_pid)
 	while (1)
 	{
 		pid = waitpid(-1, &status, 0);
-		if (pid <= 0)
+		if (pid == -1)
 			break ;
 		if (pid == last_pid)
 		{
