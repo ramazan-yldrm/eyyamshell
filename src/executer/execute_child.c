@@ -6,12 +6,11 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 14:23:34 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/25 02:58:57 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:39:31 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/stat.h>
 
 static int	is_directory(char *path)
 {

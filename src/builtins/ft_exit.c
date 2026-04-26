@@ -6,12 +6,11 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:48:21 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/25 02:53:01 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:38:56 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <limits.h>
 
 static long long	atoll_with_ovf(const char *str, int *ovf)
 {

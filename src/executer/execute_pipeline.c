@@ -6,12 +6,11 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 20:41:49 by ryildiri          #+#    #+#             */
-/*   Updated: 2026/04/26 00:13:00 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:39:41 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 static void	wait_children(pid_t last_pid)
 {
