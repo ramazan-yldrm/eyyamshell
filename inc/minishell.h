@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/26 16:52:11 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 17:43:10 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include <limits.h>
 # include <errno.h>
 
-/* ------------ error --------------- */
-
 # define ERR_MALLOC "memory allocation failed"
 # define ERR_PIPE "pipe failed"
 # define ERR_FORK "fork failed"
@@ -38,16 +36,11 @@
 # define ERR_TOO_MANY_ARGS "too many arguments"
 # define ERR_NUM_REQ "numeric argument required"
 # define ERR_IDENTIFIER "not a valid identifier"
-
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define EXIT_PERM_DENIED 126
 # define EXIT_CMD_NOT_FOUND 127
 # define EXIT_OUT_OF_RANGE 2
-
-void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
-
-/* ---------- signals ------------- */
 
 extern int	g_signal;
 
@@ -55,8 +48,6 @@ void	setup_signals(void);
 void	setup_child_signals(void);
 void	setup_heredoc_signals(void);
 void	ignore_signals(void);
-
-/* ------------ env --------------- */
 
 typedef struct s_env
 {
@@ -74,8 +65,6 @@ t_env	*env_new_node(char *key, char *value);
 void	env_remove_node(t_env **env, char *key);
 void	env_set_value(t_env **env, char *key, char *value);
 char	**env_to_array(t_env *env);
-
-/* --------------- gc -------------- */
 
 typedef enum e_gc_type
 {
@@ -96,14 +85,11 @@ void	*gc_malloc(size_t size, t_gc_type type);
 void	gc_add_node(void *value, t_gc_type type);
 void	gc_free_type(t_gc_type type);
 void	gc_free_all(void);
-
 char	*gc_strdup(const char *s1, t_gc_type type);
 char	*gc_strjoin(char const *s1, char const *s2, t_gc_type type);
 char	*gc_substr(char const *s, int start, int len, t_gc_type type);
 char	**gc_split(char const *s, char c, t_gc_type type);
 char	*gc_itoa(int n, t_gc_type type);
-
-/* ------------ lexer --------------- */
 
 typedef enum e_token_type
 {
@@ -124,28 +110,19 @@ typedef struct s_token
 }					t_token;
 
 t_token	*lexer(char *input);
-
 t_token	*handle_word(char **curr);
-//t_token	*handle_quotes(char **curr);
 t_token	*handle_pipe(char **curr);
 t_token	*handle_redirect(char **curr);
-
 t_token	*token_new_node(char *value, t_token_type type);
 void	token_add_back(t_token **token, t_token *new_token);
 int		is_space(char c);
 int		is_operator(char c);
-
-/* ----------- expander -------------- */
-
 void	expander(t_token *token, t_env *env);
 void	handle_expansion(t_token *token, int *i, t_env *env);
 void	remove_quotes(t_token *token);
 void	remove_empty_tokens(t_token **tokens);
-
 char	*replace_str(char *str, char *rep, int start_i, int end_i);
 char	*ft_ternary_str(char *value, char *default_str);
-
-/* ----------- parser ---------------- */
 
 typedef enum e_redir_type
 {
@@ -172,15 +149,12 @@ typedef struct s_cmd
 }					t_cmd;
 
 t_cmd	*parser(t_token *token);
-
 int		check_syntax(t_token *token);
 t_cmd	*cmd_new_node(void);
 void	init_cmd(t_cmd **cmd, t_cmd **curr, t_token **tmp);
 t_redir	*redir_new_node(t_redir_type type, char *file);
 void	cmd_add_back(t_cmd **cmd, t_cmd *new_cmd);
 void	redir_add_back(t_redir **redir, t_redir *new_redir);
-
-/* ---------- executor --------------*/
 
 void	executer(t_cmd *cmd, t_env **env);
 void	execute_pipeline(t_cmd *cmd, t_env **env);
@@ -192,8 +166,6 @@ int		prepare_heredoc(t_cmd *cmd);
 int		execute_redirs(t_cmd *cmd);
 int		is_builtin(t_cmd *cmd);
 int		execute_builtin(t_cmd *cmd, t_env **env);
-
-/* ---------- builtins --------------*/
 
 int		ft_cd(t_cmd *cmd, t_env **env);
 int		ft_echo(t_cmd *cmd);
@@ -209,11 +181,8 @@ int		print_sorted_export(t_env *env);
 int		is_valid(char *str);
 int		is_numeric_str(char *str);
 
-/* ------------ utils --------------- */
-
+void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
 int		get_set_status(int mode, int new_status);
 void	cleanup_and_exit(int exit_code);
-
-/* -----------------------------------*/
 
 #endif
