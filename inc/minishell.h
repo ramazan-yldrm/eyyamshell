@@ -6,7 +6,7 @@
 /*   By: ryildiri <ryildiri@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:16:32 by asari             #+#    #+#             */
-/*   Updated: 2026/04/26 16:43:51 by ryildiri         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:52:11 by ryildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@
 # define EXIT_FAILURE 1
 # define EXIT_PERM_DENIED 126
 # define EXIT_CMD_NOT_FOUND 127
-# define EXIT_SIGINT 130
-# define EXIT_SYNTAX_ERR 258
 # define EXIT_OUT_OF_RANGE 2
 
 void	perror_and_sstatus(char *cmd, char *arg, char *msg, int exit_code);
