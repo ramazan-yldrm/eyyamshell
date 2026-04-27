@@ -17,7 +17,7 @@ void	sigint_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		get_set_status(1, 130);
+		g_signal = sig;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
